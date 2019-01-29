@@ -5,12 +5,18 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour {
 
     [SerializeField] private float grabRange = 10.0f;
+    [SerializeField] private float moveObjectSpeed = 1.0f;
     [SerializeField] private GameObject controllerRight;
     [SerializeField] private GameObject controllerLeft;
     private GameObject activeController;
     private LineRenderer lineReticle;
     private LayerMask interactable;
+
     private bool triggerPressed = false;
+    private Vector2 touchPosition;
+    private bool moveObjCloser = false;
+    private bool moveObjFarther = false;
+
     private bool objHeld = false;
     private GameObject currHeldObj = null;
 
@@ -34,10 +40,46 @@ public class PlayerScript : MonoBehaviour {
 
     void handleInput()
     {
+        handleTrigger();
+        handleTouch();
+    }
+
+    void handleTouch()
+    {
+        if(currHeldObj != null)
+        {
+            if (moveObjFarther)
+            {
+                //Vector3 fartherDir = (activeController.transform.forward * grabRange + activeController.transform.position)
+                //    - currHeldObj.transform.position;
+                //currHeldObj.transform.Translate(fartherDir * moveObjectSpeed * Time.deltaTime);
+
+                //currHeldObj.transform.position = Vector3.Lerp(activeController.transform.forward *
+                //    grabRange + activeController.transform.position,
+                //    activeController.transform.position,
+                //    Time.deltaTime);
+                currHeldObj.transform.position = Vector3.MoveTowards(currHeldObj.transform.position, activeController.transform.forward * grabRange + activeController.transform.position, moveObjectSpeed * Time.deltaTime);
+            }
+            else if (moveObjCloser)
+            {
+                //Vector3 closerDir = activeController.transform.position - currHeldObj.transform.position;
+                //currHeldObj.transform.Translate(closerDir * moveObjectSpeed * Time.deltaTime);
+
+                //currHeldObj.transform.position = Vector3.Lerp(activeController.transform.position,
+                //    activeController.transform.forward * grabRange + activeController.transform.position,
+                //    Time.deltaTime);
+
+                currHeldObj.transform.position = Vector3.MoveTowards(currHeldObj.transform.position, activeController.transform.position, moveObjectSpeed*Time.deltaTime);
+            }
+        }
+    }
+
+    void handleTrigger()
+    {
         Ray ray = new Ray(activeController.transform.position, activeController.transform.forward);
         RaycastHit hit;
 
-        if(triggerPressed == true)
+        if (triggerPressed == true)
         {
             if (Physics.Raycast(ray, out hit, grabRange, interactable) && objHeld == false)
             {
@@ -48,7 +90,7 @@ public class PlayerScript : MonoBehaviour {
                 currHeldObj.GetComponent<Rigidbody>().isKinematic = true;
             }
         }
-        else if(triggerPressed == false)
+        else if (triggerPressed == false)
         {
             objHeld = false;
             if (currHeldObj != null)
@@ -65,6 +107,9 @@ public class PlayerScript : MonoBehaviour {
     {
         OVRInput.Update();
         triggerPressed = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
+        touchPosition = OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad);
+        moveObjFarther = touchPosition.y > 0.5 && touchPosition.x > -0.5 && touchPosition.x < 0.5;
+        moveObjCloser = touchPosition.y < -0.5 && touchPosition.x > -0.5 && touchPosition.x < 0.5;
     }
 
     void setLineRenderer()

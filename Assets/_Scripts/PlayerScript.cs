@@ -165,7 +165,7 @@ public class PlayerScript : MonoBehaviour {
     void rotRight()
     {
         Vector3 rotAxis = activeController.transform.position - currHeldObj.transform.position;
-        currHeldObj.transform.Rotate(-rotAxis * Time.deltaTime * 10);
+        currHeldObj.transform.Rotate(-rotAxis * Time.deltaTime * rotObjSpeed);
     }
 
 

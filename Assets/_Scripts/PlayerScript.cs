@@ -14,7 +14,14 @@ public class PlayerScript : MonoBehaviour {
     //---------------------- VARIABLES ----------------------//
     //-------------------------------------------------------//
 
+    enum Axis { ROLL, PITCH, YAW };
+
+    [SerializeField] private GameObject ovrRig;
+    [SerializeField] private GameObject hmd;
+    [SerializeField] private GameObject maxPosRight;
+    [SerializeField] private GameObject maxPosLeft;
     [SerializeField] private float grabRange = 10.0f;
+    [SerializeField] private float moveSpeed = 1.0f;
     [SerializeField] private float moveObjectSpeed = 1.0f;
     [SerializeField] private float rotObjSpeed = 20.0f;
     [SerializeField] private GameObject controllerRight;
@@ -23,18 +30,18 @@ public class PlayerScript : MonoBehaviour {
     private GameObject currHeldObj = null;
     private LineRenderer lineReticle;
     private LayerMask interactable;
+    private Vector3 originalForward;
+    private bool facingForward = true;
 
     //Input variables
     private Vector2 touchPosition;
     private Vector2 clickPosition;
     private bool triggerPressed = false;
     private bool touchClicked = false;
-    private bool moveObjCloser = false;
-    private bool moveObjFarther = false;
-    private bool rotateObjRight = false;
-    private bool rotateObjLeft = false;
-    private bool rotateObjBack = false;
-    private bool rotateObjFwd = false;
+    private bool touchLeft = false;
+    private bool touchRight = false;
+    private bool touchUp = false;
+    private bool touchDown = false;
     private bool objHeld = false;
 
     // Use this for initialization
@@ -42,6 +49,7 @@ public class PlayerScript : MonoBehaviour {
         initControllerHand();
         initLineReticle();
         initLayerMasks();
+        originalForward = ovrRig.transform.TransformDirection(Vector3.forward);
 	}
 	
 	// Update is called once per frame
@@ -71,32 +79,40 @@ public class PlayerScript : MonoBehaviour {
     void handleTouch()
     {
         //If player is currently holding an object they will be able to move it forward or backwards
-        if(currHeldObj != null)
+        if(objHeld)
         {
-            if (moveObjFarther)//Moves object farther away from controller, stopping at max reach
+            //Moving held object closer or farther
+            if (touchUp)//Moves object farther away from controller, stopping at max reach
             {
                 currHeldObj.transform.position = 
                     Vector3.MoveTowards(currHeldObj.transform.position, 
                     activeController.transform.forward * grabRange + activeController.transform.position, 
                     moveObjectSpeed * Time.deltaTime);
             }
-            else if (moveObjCloser)//Moves object closer to controller, stopping at controller position
+            else if (touchDown)//Moves object closer to controller, stopping at controller position
             {
                 currHeldObj.transform.position = 
                     Vector3.MoveTowards(currHeldObj.transform.position, 
-                    activeController.transform.position, 
+                    activeController.transform.position,
                     moveObjectSpeed*Time.deltaTime);
             }
-
-            if (rotateObjLeft)
-                rotLeft();
-            else if (rotateObjRight)
-                rotRight();
-            else if (rotateObjBack)
-                rotBackward();
-            else if (rotateObjFwd)
-                rotForward();
         }
+
+        //Checks if player is facing forward
+        if (Vector3.Angle(originalForward, hmd.transform.TransformDirection(Vector3.forward)) > 90.0f)
+            facingForward = false;
+        else
+            facingForward = true;
+
+        //Moves towards direction pressed down
+        if (touchLeft && facingForward == true)
+            ovrRig.transform.position = Vector3.MoveTowards(ovrRig.transform.position, maxPosLeft.transform.position, moveSpeed * Time.deltaTime);
+        else if (touchRight && facingForward == true)
+            ovrRig.transform.position = Vector3.MoveTowards(ovrRig.transform.position, maxPosRight.transform.position, moveSpeed * Time.deltaTime);
+        else if (touchLeft && facingForward == false)
+            ovrRig.transform.position = Vector3.MoveTowards(ovrRig.transform.position, maxPosRight.transform.position, moveSpeed * Time.deltaTime);
+        else if (touchRight && facingForward == false)
+            ovrRig.transform.position = Vector3.MoveTowards(ovrRig.transform.position, maxPosLeft.transform.position, moveSpeed * Time.deltaTime);
     }
 
     //Handling input for rear trigger on controller
@@ -136,36 +152,36 @@ public class PlayerScript : MonoBehaviour {
     //---------------------- TRANSFORMERS ----------------------//
     //----------------------------------------------------------//
 
-    //Use pythagoreans theorm to determine a Vector3 point directly 90 degrees to the side of the object and use that as the axis
-    //Both adjacent side and opposite side will be the same length
-    void rotForward()
-    {
-        float a = Vector3.Distance(activeController.transform.position, currHeldObj.transform.position);//Calculate side, both opp & adj are the same
-        float c = Mathf.Sqrt((a * a) * 2);// Calculate hypoteneuse   c*c = a*a + b*b   or in our case,    c*c = (a*a)*2
-        Vector3 rightSpot = activeController.transform.position + new Vector3(c, 0.0f, c);//x is right, z is forward, add our 2d triangle to our vec3
-        Vector3 rotAxis = rightSpot - currHeldObj.transform.position;//Actually calculates the new axis
-        currHeldObj.transform.Rotate(-rotAxis * Time.deltaTime * 10);//Rotates the object
-    }
-
-    void rotBackward()
+    void rotateObject(Axis axis, bool positive)
     {
         float a = Vector3.Distance(activeController.transform.position, currHeldObj.transform.position);
         float c = Mathf.Sqrt((a * a) * 2);
-        Vector3 rightSpot = activeController.transform.position + new Vector3(c, 0.0f, c);
-        Vector3 rotAxis = rightSpot - currHeldObj.transform.position;
+        Vector3 thirdPoint = new Vector3(0.0f, 0.0f, 0.0f), rotAxis;
+        switch(axis)
+        {
+            case Axis.ROLL:
+                rotAxis = activeController.transform.position - currHeldObj.transform.position;
+                break;
+            case Axis.PITCH:
+                thirdPoint = activeController.transform.position + new Vector3(c, 0.0f, c);
+                rotAxis = thirdPoint - currHeldObj.transform.position;
+                break;
+            case Axis.YAW:
+                thirdPoint = activeController.transform.position + new Vector3(0.0f, c, c);
+                rotAxis = thirdPoint - currHeldObj.transform.position;
+                break;
+            default:
+                rotAxis = activeController.transform.position - currHeldObj.transform.position;
+                break;
+        }
+        if (positive == false)
+            rotAxis = -rotAxis;
         currHeldObj.transform.Rotate(rotAxis * Time.deltaTime * rotObjSpeed);
     }
-
-    void rotLeft()
+    
+    void translateObject()
     {
-        Vector3 rotAxis = activeController.transform.position - currHeldObj.transform.position;
-        currHeldObj.transform.Rotate(rotAxis * Time.deltaTime * rotObjSpeed);
-    }
 
-    void rotRight()
-    {
-        Vector3 rotAxis = activeController.transform.position - currHeldObj.transform.position;
-        currHeldObj.transform.Rotate(-rotAxis * Time.deltaTime * rotObjSpeed);
     }
 
 
@@ -176,14 +192,19 @@ public class PlayerScript : MonoBehaviour {
     //Function for recieving and storing input for use later on
     void getInput()
     {
-        OVRInput.Update();
+        OVRInput.Update();//need to call this first to get input data
+        //Trigger
         triggerPressed = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
+
+        //Touchpad click
         touchClicked = OVRInput.Get(OVRInput.Button.PrimaryTouchpad);
+
+        //Touchpad
         touchPosition = OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad);
-        moveObjFarther = touchPosition.y > 0.5 && touchPosition.x > -0.5 && touchPosition.x < 0.5;
-        moveObjCloser = touchPosition.y < -0.5 && touchPosition.x > -0.5 && touchPosition.x < 0.5;
-        rotateObjLeft = touchPosition.x < -0.5 && touchPosition.y < 0.5 && touchPosition.y > -0.5;
-        rotateObjRight = touchPosition.x > 0.5 && touchPosition.y < 0.5 && touchPosition.y > -0.5;
+        touchUp = touchPosition.x < 0.5 && touchPosition.x > -0.5 && touchPosition.y > 0.1;
+        touchDown = touchPosition.x < 0.5 && touchPosition.x > -0.5 && touchPosition.y < -0.1;
+        touchLeft = touchPosition.y < 0.5 && touchPosition.y > -0.5 && touchPosition.x < -0.5;
+        touchRight = touchPosition.y < 0.5 && touchPosition.y > -0.5 && touchPosition.x > 0.5;
     }
 
 

@@ -9,12 +9,14 @@ public class GameManager : MonoBehaviour {
     //-------------------------------------------------------//
 
     //Public
-    public enum difficulty { EASY, MEDIUM, HARD }
+    public enum difficulty { EASY = 1, MEDIUM = 2, HARD = 3 }
     public static GameManager instance = null;
-    public GameObject[] dishes;
+    public GameObject[] dishSpawns;
+    public List<GameObject> dishes;
     public List<DishScript> dishScripts;
 
     //Private
+    [SerializeField] private GameObject dish;
     private int stage = 1;
     private int lowStage = 1;
     private int highStage = 3;
@@ -43,10 +45,10 @@ public class GameManager : MonoBehaviour {
     {
         setStage(1);
         setDifficulty(difficulty.EASY);
-        dishes = GameObject.FindGameObjectsWithTag("Dish");
-        dishScripts.Clear();
-        for(int i = 0; i < dishes.Length; i++)
+        dishSpawns = GameObject.FindGameObjectsWithTag("DishSpawn");
+        for (int i = 0; i < (int)mode; i++)
         {
+            dishes.Add(Instantiate(dish, dishSpawns[i].transform.position, dishSpawns[i].transform.rotation));
             dishScripts.Add(dishes[i].GetComponent<DishScript>());
         }
     }

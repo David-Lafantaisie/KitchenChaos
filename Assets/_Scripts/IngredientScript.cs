@@ -41,9 +41,15 @@ public class IngredientScript : MonoBehaviour {
                 if(inDistance == true)
                 {
                     dishS.addIngredient(gameObject, this);
+
+
+
                     dishS.setBurgerHeight(height, true);
-                    heightInBurger = dishS.getBurgerHeight();
-                    gameObject.transform.position = GameManager.instance.dishes[i].transform.position + new Vector3(0.0f, dishS.getBurgerHeight(), 0.0f);
+                    heightInBurger = dishS.getBurgerHeight()-height;
+                    gameObject.transform.position = GameManager.instance.dishes[i].transform.position + new Vector3(0.0f, dishS.getBurgerHeight()-height, 0.0f);
+
+
+
                     gameObject.transform.rotation = GameManager.instance.dishes[i].transform.rotation;
                     gameObject.GetComponent<Rigidbody>().useGravity = false;
                     gameObject.transform.parent = GameManager.instance.dishes[i].transform;
@@ -100,6 +106,6 @@ public class IngredientScript : MonoBehaviour {
 
     void initHeight()
     {
-        height = gameObject.GetComponent<BoxCollider>().bounds.size.y;
+        height = collider.bounds.extents.y;
     }
 }

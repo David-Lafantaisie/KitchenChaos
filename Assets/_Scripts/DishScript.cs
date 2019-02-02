@@ -59,7 +59,7 @@ public class DishScript : MonoBehaviour {
         {
             for (int i = 0; i < ingredientListLength; i++)
             {
-                ingredientsAttached[i].transform.position = 
+                ingredientsAttached[i].transform.position =
                     gameObject.transform.position + new Vector3(0.0f, ingredientScripts[i].getHeightInBurger(), 0.0f);
                 ingredientsAttached[i].transform.rotation = gameObject.transform.rotation;
             }
@@ -83,7 +83,7 @@ public class DishScript : MonoBehaviour {
     public void setBurgerHeight(float ingHeight, bool addHeight)
     {
         if (addHeight == true)
-            burgerHeight += ingHeight;
+            burgerHeight += (ingHeight * 2);
         else
             burgerHeight -= ingHeight;
     }

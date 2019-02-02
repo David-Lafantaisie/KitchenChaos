@@ -100,6 +100,6 @@ public class IngredientScript : MonoBehaviour {
 
     void initHeight()
     {
-        height = collider.bounds.size.y;
+        height = gameObject.GetComponent<BoxCollider>().bounds.size.y;
     }
 }

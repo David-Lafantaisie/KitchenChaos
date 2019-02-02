@@ -1,7 +1,8 @@
 ﻿//------------------------------------------------------------//
 //---------------------- KITCHEN CHAOS -----------------------//
 //-------------------- PLAYER CONTROLLER ---------------------//
-//------------------- By David Lafantaisie -------------------//
+//------------------- By David Lafantaisie -------------------// ------>Add your name to this list if you contribute
+//------------------ for PROMACHOS STUDIOS -------------------//
 //------------------------------------------------------------//
 
 using System.Collections;
@@ -142,6 +143,10 @@ public class PlayerScript : MonoBehaviour {
                 currHeldObj.transform.parent = null;
                 currHeldObj.GetComponent<Rigidbody>().isKinematic = false;
                 currHeldObj.GetComponent<Rigidbody>().useGravity = true;
+                if (currHeldObj.tag == "Ingredient")
+                {
+                    currHeldObj.GetComponent<IngredientScript>().checkAttach();
+                }
                 currHeldObj = null;
             }
         }
@@ -178,11 +183,6 @@ public class PlayerScript : MonoBehaviour {
             rotAxis = -rotAxis;
         currHeldObj.transform.Rotate(rotAxis * Time.deltaTime * rotObjSpeed);
     }
-    
-    void translateObject()
-    {
-
-    }
 
 
     //-----------------------------------------------------//
@@ -195,6 +195,10 @@ public class PlayerScript : MonoBehaviour {
         OVRInput.Update();//need to call this first to get input data
         //Trigger
         triggerPressed = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    triggerPressed = !triggerPressed;
+        //}
 
         //Touchpad click
         touchClicked = OVRInput.Get(OVRInput.Button.PrimaryTouchpad);
@@ -203,6 +207,8 @@ public class PlayerScript : MonoBehaviour {
         touchPosition = OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad);
         touchUp = touchPosition.x < 0.5 && touchPosition.x > -0.5 && touchPosition.y > 0.1;
         touchDown = touchPosition.x < 0.5 && touchPosition.x > -0.5 && touchPosition.y < -0.1;
+        //touchLeft = Input.GetKey(KeyCode.A);
+        //touchRight = Input.GetKey(KeyCode.D);
         touchLeft = touchPosition.y < 0.5 && touchPosition.y > -0.5 && touchPosition.x < -0.5;
         touchRight = touchPosition.y < 0.5 && touchPosition.y > -0.5 && touchPosition.x > 0.5;
     }

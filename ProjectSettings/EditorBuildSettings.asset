@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Scenes/protoPlayerController.unity
-    guid: 0032f253d79a8c74388200341bb48f85
+    path: Assets/_Scenes/protoBurgerCreation.unity
+    guid: ddb9ec2b937aacf4a83e6dd9976af9f3

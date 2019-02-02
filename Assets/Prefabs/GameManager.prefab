@@ -51,3 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724d82b75b4a7304ab2e2cdae94a3b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dishSpawns: []
+  dishes: []
+  dishScripts: []
+  dish: {fileID: 1843860000063300, guid: 725ed4fcafdc992478ddb85432e389e3, type: 2}

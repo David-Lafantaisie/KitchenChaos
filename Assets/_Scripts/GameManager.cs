@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿//------------------------------------------------------------//
+//---------------------- KITCHEN CHAOS -----------------------//
+//---------------------- GAME MANAGER ------------------------//
+//------------------- By David Lafantaisie -------------------// ------>Add your name to this list if you contribute
+//------------------ for PROMACHOS STUDIOS -------------------//
+//------------------------------------------------------------//
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +27,7 @@ public class GameManager : MonoBehaviour {
     private int stage = 1;
     private int lowStage = 1;
     private int highStage = 3;
+    private int dishListLength;
     private difficulty mode = difficulty.EASY;
 
     //----------------------------------------------------------//
@@ -44,25 +52,26 @@ public class GameManager : MonoBehaviour {
     void initGame()
     {
         setStage(1);
-        setDifficulty(difficulty.EASY);
+        setDifficulty(difficulty.HARD);
         dishSpawns = GameObject.FindGameObjectsWithTag("DishSpawn");
         for (int i = 0; i < (int)mode; i++)
         {
             dishes.Add(Instantiate(dish, dishSpawns[i].transform.position, dishSpawns[i].transform.rotation));
             dishScripts.Add(dishes[i].GetComponent<DishScript>());
         }
+        dishListLength = (int)mode;
     }
 
     //-----------------------------------------------------//
     //---------------------- SETTERS ----------------------//
     //-----------------------------------------------------//
 
-    void setDifficulty(difficulty m)
+    public void setDifficulty(difficulty m)
     {
         mode = m;
     }
 
-    void setStage(int s)
+    public void setStage(int s)
     {
         if (s <= highStage && s >= lowStage)
             stage = s;
@@ -72,14 +81,19 @@ public class GameManager : MonoBehaviour {
     //---------------------- GETTERS ----------------------//
     //-----------------------------------------------------//
 
-    difficulty getDifficulty()
+    public difficulty getDifficulty()
     {
         return mode;
     }
 
-    int getStage()
+    public int getStage()
     {
         return stage;
+    }
+
+    public int getDishListLength()
+    {
+        return dishListLength;
     }
 
 }

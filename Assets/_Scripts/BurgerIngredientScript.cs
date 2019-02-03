@@ -9,7 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IngredientScript : MonoBehaviour {
+public class BurgerIngredientScript : MonoBehaviour
+{
 
     //-------------------------------------------------------//
     //---------------------- VARIABLES ----------------------//
@@ -32,21 +33,21 @@ public class IngredientScript : MonoBehaviour {
         for (int i = 0; i < GameManager.instance.getDishListLength(); i++)
         {
             //Array of scripts inside the game manager instance
-            DishScript dishS = GameManager.instance.dishScripts[i];
+            BurgerDishScript dishS = GameManager.instance.dishScripts[i];
 
             //If the dish has not been started and the ingredient is in the distance of it, we will attach it
             if (attached == false)
             {
                 inDistance = Vector3.Distance(gameObject.transform.position, GameManager.instance.dishes[i].transform.position + new Vector3(0.0f, dishS.getBurgerHeight(), 0.0f)) < attachDistance;
-                if(inDistance == true)
+                if (inDistance == true)
                 {
                     dishS.addIngredient(gameObject, this);
 
 
 
                     dishS.setBurgerHeight(height, true);
-                    heightInBurger = dishS.getBurgerHeight()-height;
-                    gameObject.transform.position = GameManager.instance.dishes[i].transform.position + new Vector3(0.0f, dishS.getBurgerHeight()-height, 0.0f);
+                    heightInBurger = dishS.getBurgerHeight() - height;
+                    gameObject.transform.position = GameManager.instance.dishes[i].transform.position + new Vector3(0.0f, dishS.getBurgerHeight() - height, 0.0f);
 
 
 
@@ -54,7 +55,7 @@ public class IngredientScript : MonoBehaviour {
                     gameObject.GetComponent<Rigidbody>().useGravity = false;
                     gameObject.transform.parent = GameManager.instance.dishes[i].transform;
                     setAttached(true);
-                    if(dishS.getStarted() == false)
+                    if (dishS.getStarted() == false)
                         dishS.setStarted(true);
                 }
             }

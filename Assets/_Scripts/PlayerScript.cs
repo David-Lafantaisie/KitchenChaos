@@ -145,7 +145,7 @@ public class PlayerScript : MonoBehaviour {
                 currHeldObj.GetComponent<Rigidbody>().useGravity = true;
                 if (currHeldObj.tag == "Ingredient")
                 {
-                    currHeldObj.GetComponent<IngredientScript>().checkAttach();
+                    currHeldObj.GetComponent<BurgerIngredientScript>().checkAttach();
                 }
                 currHeldObj = null;
             }

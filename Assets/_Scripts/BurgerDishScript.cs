@@ -9,30 +9,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DishScript : MonoBehaviour {
-    
+public class BurgerDishScript : MonoBehaviour
+{
+
     private bool started = false;
     public List<GameObject> ingredientsAttached;
-    public List<IngredientScript> ingredientScripts;
+    public List<BurgerIngredientScript> ingredientScripts;
     private int ingredientListLength;
     private float burgerHeight = 0.0f;
     private float originalHeight = 0.0f;
     private Vector3 originalUp;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         initBurgerHeight();
         originalUp = gameObject.transform.TransformDirection(Vector3.up);
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         updateIngredientPositions();
-        if(Vector3.Angle(originalUp, gameObject.transform.TransformDirection(Vector3.up)) > 45.0f && started == true)
+        if (Vector3.Angle(originalUp, gameObject.transform.TransformDirection(Vector3.up)) > 45.0f && started == true)
         {
             resetBurger();
         }
-	}
+    }
 
 
     //-----------------------------------------------------//
@@ -42,11 +45,11 @@ public class DishScript : MonoBehaviour {
     public void setStarted(bool s)
     {
         started = s;
-        if(s == true)
+        if (s == true)
             originalUp = gameObject.transform.TransformDirection(Vector3.up);
     }
 
-    public void addIngredient(GameObject ingredient, IngredientScript ingScript)
+    public void addIngredient(GameObject ingredient, BurgerIngredientScript ingScript)
     {
         ingredientsAttached.Add(ingredient);
         ingredientScripts.Add(ingScript);
@@ -111,7 +114,7 @@ public class DishScript : MonoBehaviour {
     //----------------------------------------------------------//
     //---------------------- INITIALIZERS ----------------------//
     //----------------------------------------------------------//
-    
+
     void initBurgerHeight()
     {
         originalHeight = gameObject.GetComponent<BoxCollider>().bounds.extents.y;

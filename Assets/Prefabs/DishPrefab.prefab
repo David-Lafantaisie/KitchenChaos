@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65841956283363844}
   - component: {fileID: 23686415182768858}
   - component: {fileID: 54480584249239822}
-  - component: {fileID: 114361743728667824}
+  - component: {fileID: 114010477128426452}
   m_Layer: 8
   m_Name: DishPrefab
   m_TagString: Dish
@@ -112,7 +112,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114361743728667824
+--- !u!114 &114010477128426452
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1843860000063300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6669312bce873b7408095d503ceb08cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 144e0296a90bb094bacec6479c09a741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ingredientsAttached: []

@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
     public GameObject[] dishSpawns;
     public List<GameObject> dishes;
-    public List<DishScript> dishScripts;
+    public List<BurgerDishScript> dishScripts;
 
     //Private
     [SerializeField] private GameObject dish;
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < (int)mode; i++)
         {
             dishes.Add(Instantiate(dish, dishSpawns[i].transform.position, dishSpawns[i].transform.rotation));
-            dishScripts.Add(dishes[i].GetComponent<DishScript>());
+            dishScripts.Add(dishes[i].GetComponent<BurgerDishScript>());
         }
         dishListLength = (int)mode;
     }

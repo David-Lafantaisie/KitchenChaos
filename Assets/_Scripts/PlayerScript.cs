@@ -17,6 +17,17 @@ public class PlayerScript : MonoBehaviour {
 
     enum Axis { ROLL, PITCH, YAW };
 
+    //TESTING VARIABLES
+    [SerializeField] private bool testingControls = false;//Set this to true if you want to use testing controls instead of regular ones
+    [SerializeField] private GameObject testStartPos;
+    [SerializeField] private GameObject testMaxLeftPos;
+    [SerializeField] private GameObject testMaxRightPos;
+    private float yaw = 0.0f;
+    private float pitch = 0.0f;
+    private float speedH = 2.0f;
+    private float speedV = 2.0f;
+
+    //REGULAR VARIABLES
     [SerializeField] private GameObject ovrRig;
     [SerializeField] private GameObject hmd;
     [SerializeField] private GameObject maxPosRight;
@@ -46,15 +57,24 @@ public class PlayerScript : MonoBehaviour {
     private bool objHeld = false;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         initControllerHand();
         initLineReticle();
         initLayerMasks();
         originalForward = ovrRig.transform.TransformDirection(Vector3.forward);
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        if (testingControls)
+        {
+            maxPosRight = testMaxRightPos;
+            maxPosLeft = testMaxLeftPos;
+            ovrRig.transform.position = testStartPos.transform.position;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            activeController.transform.Translate(new Vector3(0.1f, 0.0f, 0.0f));
+        }
+    }
+
+    // Update is called once per frame
+    void Update() {
         setLineRenderer();
         getInput();
     }
@@ -80,22 +100,22 @@ public class PlayerScript : MonoBehaviour {
     void handleTouch()
     {
         //If player is currently holding an object they will be able to move it forward or backwards
-        if(objHeld)
+        if (objHeld)
         {
             //Moving held object closer or farther
             if (touchUp)//Moves object farther away from controller, stopping at max reach
             {
-                currHeldObj.transform.position = 
-                    Vector3.MoveTowards(currHeldObj.transform.position, 
-                    activeController.transform.forward * grabRange + activeController.transform.position, 
+                currHeldObj.transform.position =
+                    Vector3.MoveTowards(currHeldObj.transform.position,
+                    activeController.transform.forward * grabRange + activeController.transform.position,
                     moveObjectSpeed * Time.deltaTime);
             }
             else if (touchDown)//Moves object closer to controller, stopping at controller position
             {
-                currHeldObj.transform.position = 
-                    Vector3.MoveTowards(currHeldObj.transform.position, 
+                currHeldObj.transform.position =
+                    Vector3.MoveTowards(currHeldObj.transform.position,
                     activeController.transform.position,
-                    moveObjectSpeed*Time.deltaTime);
+                    moveObjectSpeed * Time.deltaTime);
             }
         }
 
@@ -162,7 +182,7 @@ public class PlayerScript : MonoBehaviour {
         float a = Vector3.Distance(activeController.transform.position, currHeldObj.transform.position);
         float c = Mathf.Sqrt((a * a) * 2);
         Vector3 thirdPoint = new Vector3(0.0f, 0.0f, 0.0f), rotAxis;
-        switch(axis)
+        switch (axis)
         {
             case Axis.ROLL:
                 rotAxis = activeController.transform.position - currHeldObj.transform.position;
@@ -192,26 +212,36 @@ public class PlayerScript : MonoBehaviour {
     //Function for recieving and storing input for use later on
     void getInput()
     {
-        OVRInput.Update();//need to call this first to get input data
-        //Trigger
-        triggerPressed = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
-        //Touchpad click
-        touchClicked = OVRInput.Get(OVRInput.Button.PrimaryTouchpad);
+        //OCULUS TOUCH CONTROLLER CONTROLS
+        if (testingControls == false)
+        {
+            OVRInput.Update();//need to call this first to get input data
+            //Trigger
+            triggerPressed = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
+            //Touchpad click
+            touchClicked = OVRInput.Get(OVRInput.Button.PrimaryTouchpad);
 
-        //Touchpad
-        touchPosition = OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad);
-        touchUp = touchPosition.x < 0.5 && touchPosition.x > -0.5 && touchPosition.y > 0.1;
-        touchDown = touchPosition.x < 0.5 && touchPosition.x > -0.5 && touchPosition.y < -0.1;
-        touchLeft = touchPosition.y < 0.5 && touchPosition.y > -0.5 && touchPosition.x < -0.5;
-        touchRight = touchPosition.y < 0.5 && touchPosition.y > -0.5 && touchPosition.x > 0.5;
-
-        //TESTING CONTROLS
-        //touchLeft = Input.GetKey(KeyCode.A);
-        //touchRight = Input.GetKey(KeyCode.D);
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    triggerPressed = !triggerPressed;
-        //}
+            //Touchpad
+            touchPosition = OVRInput.Get(OVRInput.Axis2D.PrimaryTouchpad);
+            touchUp = touchPosition.x < 0.5 && touchPosition.x > -0.5 && touchPosition.y > 0.1;
+            touchDown = touchPosition.x < 0.5 && touchPosition.x > -0.5 && touchPosition.y < -0.1;
+            touchLeft = touchPosition.y < 0.5 && touchPosition.y > -0.5 && touchPosition.x < -0.5;
+            touchRight = touchPosition.y < 0.5 && touchPosition.y > -0.5 && touchPosition.x > 0.5;
+        }
+        //KEYBOARD AND MOUSE TESTING CONTROLS
+        else
+        {
+            //Move left and right with A and D
+            touchLeft = Input.GetKey(KeyCode.A);
+            touchRight = Input.GetKey(KeyCode.D);
+            triggerPressed = Input.GetMouseButton(0);
+            touchUp = Input.GetKey(KeyCode.W);
+            touchDown = Input.GetKey(KeyCode.S);
+            //Rotate camera based on mouse position
+            yaw += speedH * Input.GetAxis("Mouse X");
+            pitch -= speedV * Input.GetAxis("Mouse Y");
+            ovrRig.transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        }
     }
 
 

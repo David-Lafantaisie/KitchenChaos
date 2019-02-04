@@ -26,6 +26,8 @@ public class PlayerScript : MonoBehaviour {
     private float pitch = 0.0f;
     private float speedH = 2.0f;
     private float speedV = 2.0f;
+    GameObject[] solidObjects;
+    [SerializeField] GameObject testTable;
 
     //REGULAR VARIABLES
     [SerializeField] private GameObject ovrRig;
@@ -71,17 +73,53 @@ public class PlayerScript : MonoBehaviour {
             Cursor.visible = false;
             activeController.transform.Translate(new Vector3(0.1f, 0.0f, 0.0f));
         }
+        solidObjects = GameObject.FindGameObjectsWithTag("SolidObj");
     }
 
     // Update is called once per frame
     void Update() {
         setLineRenderer();
         getInput();
+        handleInput();
     }
 
     private void FixedUpdate()
     {
-        handleInput();
+        if(currHeldObj != null)
+        {
+            BoxCollider coll = currHeldObj.GetComponent<BoxCollider>();
+            Vector3 origin = currHeldObj.transform.position;
+            Vector3[] vertices = new Vector3[8];
+            vertices[0] = origin + new Vector3(-coll.bounds.extents.x, -coll.bounds.extents.y, -coll.bounds.extents.z);
+            vertices[1] = origin + new Vector3(-coll.bounds.extents.x, coll.bounds.extents.y, -coll.bounds.extents.z);
+            vertices[2] = origin + new Vector3(coll.bounds.extents.x, coll.bounds.extents.y, -coll.bounds.extents.z);
+            vertices[3] = origin + new Vector3(coll.bounds.extents.x, -coll.bounds.extents.y, -coll.bounds.extents.z);
+            vertices[4] = origin + new Vector3(-coll.bounds.extents.x, -coll.bounds.extents.y, coll.bounds.extents.z);
+            vertices[5] = origin + new Vector3(-coll.bounds.extents.x, coll.bounds.extents.y, coll.bounds.extents.z);
+            vertices[6] = origin + new Vector3(coll.bounds.extents.x, coll.bounds.extents.y, coll.bounds.extents.z);
+            vertices[7] = origin + new Vector3(coll.bounds.extents.x, -coll.bounds.extents.y, coll.bounds.extents.z);
+
+            for(int i = 0; i < solidObjects.Length; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (solidObjects[i].GetComponent<BoxCollider>().bounds.Contains(vertices[j]))
+                    {
+                        objHeld = false;
+                        //If holding an object, it will be released
+                        currHeldObj.transform.parent = null;
+                        currHeldObj.GetComponent<Rigidbody>().isKinematic = false;
+                        currHeldObj.GetComponent<Rigidbody>().useGravity = true;
+                        if (currHeldObj.tag == "Ingredient")
+                        {
+                            currHeldObj.GetComponent<BurgerIngredientScript>().checkAttach();
+                        }
+                        currHeldObj = null;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
 

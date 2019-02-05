@@ -7,6 +7,8 @@ TagManager:
   - Ingredient
   - Dish
   - DishSpawn
+  - SuperIngredient
+  - Utensil
   layers:
   - Default
   - TransparentFX

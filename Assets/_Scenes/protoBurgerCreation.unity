@@ -1244,9 +1244,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testingControls: 1
-  testMaxLeftPos: {fileID: 0}
-  testMaxRightPos: {fileID: 0}
-  testStartPos: {fileID: 0}
+  testStartPos: {fileID: 917265876}
+  testMaxLeftPos: {fileID: 447329324}
+  testMaxRightPos: {fileID: 220287847}
+  testTable: {fileID: 1906158232}
   ovrRig: {fileID: 1095480760}
   hmd: {fileID: 501781337}
   maxPosRight: {fileID: 1902078412}

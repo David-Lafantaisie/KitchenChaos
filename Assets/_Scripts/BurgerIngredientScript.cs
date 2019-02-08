@@ -2,6 +2,7 @@
 //---------------------- KITCHEN CHAOS -----------------------//
 //-------------------- INGREDIENT SCRIPT ---------------------//
 //------------------- By David Lafantaisie -------------------// ------>Add your name to this list if you contribute
+//---------------------- Tyler McMillan ----------------------// 
 //------------------ for PROMACHOS STUDIOS -------------------//
 //------------------------------------------------------------//
 
@@ -23,10 +24,84 @@ public class BurgerIngredientScript : MonoBehaviour
     private float attachDistance = 0.25f;
     private bool inDistance = false;
 
+    //Cooking Vars
+    private float totalTimeCooked = 0f;
+    [SerializeField] float prefectCookingTime = 0f;
+    public bool itemCooking = false;
+    public Color foodColor = Color.red;
+    public Renderer rend;
+
+    void StartColor()
+    {
+        if (gameObject.name == "BurgerPatty")
+        {
+            if (totalTimeCooked == 0.0f)
+            {
+                foodColor.g = 0f;
+                foodColor.r = 0f;
+                foodColor.b = 0f;
+                foodColor.a = 0f;
+            }
+            else if (totalTimeCooked <= prefectCookingTime * 0.2f)
+            {
+                foodColor.g = 1f;
+                foodColor.r = 0f;
+                foodColor.b = 0f;
+                foodColor.a = 0f;
+            }
+            else if (totalTimeCooked <= prefectCookingTime * 0.4f)
+            {
+                foodColor.g = 0f;
+                foodColor.r = 1f;
+                foodColor.b = 0f;
+                foodColor.a = 0f;
+            }
+            else if (totalTimeCooked <= prefectCookingTime * 0.6f)
+            {
+                foodColor.g = 0f;
+                foodColor.r = 0f;
+                foodColor.b = 1f;
+                foodColor.a = 0f;
+            }
+            else if (totalTimeCooked <= prefectCookingTime * 0.8f)
+            {
+                foodColor.g = 0f;
+                foodColor.r = 1f;
+                foodColor.b = 1f;
+                foodColor.a = 0f;
+            }
+            else if (totalTimeCooked <= prefectCookingTime * 1.0f)
+            {
+                foodColor.g = 1f;
+                foodColor.r = 1f;
+                foodColor.b = 0f;
+                foodColor.a = 0f;
+            }
+            else if (totalTimeCooked > prefectCookingTime * 1.0f)
+            {
+                foodColor.g = 1f;
+                foodColor.r = 1f;
+                foodColor.b = 1f;
+                foodColor.a = 0f;
+            }
+
+
+        }
+    }
+
+
+
     private void Start()
     {
         initHeight();
+        if (gameObject.name == "BurgerPatty")
+        {
+            StartColor();
+            rend = GetComponent<Renderer>();
+            rend.material.color = foodColor;
+        }
     }
+
 
     public void checkAttach()
     {
@@ -62,6 +137,15 @@ public class BurgerIngredientScript : MonoBehaviour
         }
     }
 
+    //Best way to check this ?
+    void Update()
+    {
+        if (itemCooking)
+        {
+            totalTimeCooked += Time.deltaTime;
+            ingredientState();
+        }
+    }
     //-----------------------------------------------------//
     //---------------------- SETTERS ----------------------//
     //-----------------------------------------------------//
@@ -79,6 +163,24 @@ public class BurgerIngredientScript : MonoBehaviour
         gameObject.transform.parent = null;
         setAttached(false);
     }
+
+    public void ingredientState()
+    {
+        if(prefectCookingTime == 0 && totalTimeCooked > 0)
+        {
+            Destroy(gameObject);
+        }
+        else if(prefectCookingTime > 0)
+        {
+            if (gameObject.name == "BurgerPatty")
+            {
+                StartColor();
+                rend = GetComponent<Renderer>();
+                rend.material.color = foodColor;
+            }
+        }
+    }
+    
 
 
     //-----------------------------------------------------//

@@ -12,14 +12,23 @@ public class StoveScript : MonoBehaviour {
 
     private bool cooking = false;
 
-    void OnCollisionEnter(Collision col)
+    void OnTriggerEnter(Collider col)
     {
         if(col.gameObject.tag == "Ingredient")
         {
             col.gameObject.GetComponent<BurgerIngredientScript>().itemCooking = true;
         }
     }
-    void OnCollisionExit(Collision col)
+
+    void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject.tag == "Ingredient")
+        {
+            col.gameObject.GetComponent<BurgerIngredientScript>().totalTimeCooked += Time.deltaTime;
+            col.gameObject.GetComponent<BurgerIngredientScript>().ingredientState();
+        }
+    }
+    void OnTriggerExit(Collider col)
     {
         if (col.gameObject.tag == "Ingredient")
         {

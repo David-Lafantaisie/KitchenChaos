@@ -25,7 +25,7 @@ public class BurgerIngredientScript : MonoBehaviour
     private bool inDistance = false;
 
     //Cooking Vars
-    private float totalTimeCooked = 0f;
+    public float totalTimeCooked = 0f;
     [SerializeField] float prefectCookingTime = 0f;
     public bool itemCooking = false;
     public Color foodColor = Color.red;
@@ -137,15 +137,7 @@ public class BurgerIngredientScript : MonoBehaviour
         }
     }
 
-    //Best way to check this ?
-    void Update()
-    {
-        if (itemCooking)
-        {
-            totalTimeCooked += Time.deltaTime;
-            ingredientState();
-        }
-    }
+   
     //-----------------------------------------------------//
     //---------------------- SETTERS ----------------------//
     //-----------------------------------------------------//

@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 58936541}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -559,6 +560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 192605004}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -795,6 +797,8 @@ GameObject:
   - component: {fileID: 403345642}
   - component: {fileID: 403345641}
   - component: {fileID: 403345646}
+  - component: {fileID: 403345647}
+  - component: {fileID: 403345645}
   m_Layer: 0
   m_Name: Grill
   m_TagString: Untagged
@@ -868,6 +872,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &403345645
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 403345640}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &403345646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -879,6 +898,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a1fa934d3006e4ab81f3aacf1461ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &403345647
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 403345640}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99999994, y: 1.4417133, z: 0.9999998}
+  m_Center: {x: 0, y: -0.22085734, z: 0}
 --- !u!1 &416715883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,6 +1439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 690057269}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1553,6 +1585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 712333584}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1670,6 +1703,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 720732546}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1787,6 +1821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 756738187}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1932,6 +1967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 866451912}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2049,6 +2085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 884046467}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2166,6 +2203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 916263751}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2373,6 +2411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 942163063}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2490,6 +2529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 952526212}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2691,6 +2731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 1009781203}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -3137,6 +3178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 1112418363}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -3468,6 +3510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 1311160574}
+  totalTimeCooked: 0
   prefectCookingTime: 0
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}
@@ -3932,6 +3975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 1884289552}
+  totalTimeCooked: 0
   prefectCookingTime: 50
   itemCooking: 0
   foodColor: {r: 1, g: 0, b: 0, a: 1}

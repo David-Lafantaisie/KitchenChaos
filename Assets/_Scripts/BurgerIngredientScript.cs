@@ -18,6 +18,7 @@ public class BurgerIngredientScript : MonoBehaviour
     //-------------------------------------------------------//
 
     [SerializeField] private Collider collider;
+    [SerializeField] private GameObject model;
     private bool attached = false;
     private float height;
     private float heightInBurger = 0.0f;
@@ -29,7 +30,7 @@ public class BurgerIngredientScript : MonoBehaviour
     [SerializeField] private float perfectCookingTime = 0.0f;
     private float totalTimeCooked = 0.0f;
     private bool itemCooking = false;
-    public Color foodColor = Color.red;
+    private Color foodColor = Color.white;
     private Renderer rend;
 
     void StartColor()
@@ -38,54 +39,61 @@ public class BurgerIngredientScript : MonoBehaviour
         {
             if (totalTimeCooked == 0.0f)
             {
-                foodColor.g = 0f;
-                foodColor.r = 0.5f;
-                foodColor.b = 0.5f;
-                foodColor.a = 0f;
+                foodColor.r = 1f;
+                foodColor.g = 1f;
+                foodColor.b = 1f;
+                foodColor.a = 1f;
             }
             else if (totalTimeCooked <= perfectCookingTime * 0.2f)
             {
-                foodColor.g = 1f;
-                foodColor.r = 0f;
-                foodColor.b = 0f;
-                foodColor.a = 0f;
+                foodColor.r = 0.95f;
+                foodColor.g = 0.8f;
+                foodColor.b = 0.8f;
+                foodColor.a = 1f;
             }
             else if (totalTimeCooked <= perfectCookingTime * 0.4f)
             {
-                foodColor.g = 0f;
-                foodColor.r = 1f;
-                foodColor.b = 0f;
-                foodColor.a = 0f;
+                foodColor.r = 0.9f;
+                foodColor.g = 0.7f;
+                foodColor.b = 0.6f;
+                foodColor.a = 1f;
             }
             else if (totalTimeCooked <= perfectCookingTime * 0.6f)
             {
-                foodColor.g = 0f;
-                foodColor.r = 0f;
-                foodColor.b = 1f;
-                foodColor.a = 0f;
+                foodColor.r = 0.85f;
+                foodColor.g = 0.6f;
+                foodColor.b = 0.4f;
+                foodColor.a = 1f;
             }
             else if (totalTimeCooked <= perfectCookingTime * 0.8f)
             {
-                foodColor.g = 0f;
-                foodColor.r = 1f;
-                foodColor.b = 1f;
-                foodColor.a = 0f;
+                foodColor.r = 0.8f;
+                foodColor.g = 0.5f;
+                foodColor.b = 0.2f;
+                foodColor.a = 1f;
             }
             else if (totalTimeCooked <= perfectCookingTime * 1.0f)
             {
-                foodColor.g = 1f;
-                foodColor.r = 1f;
-                foodColor.b = 0f;
-                foodColor.a = 0f;
+                foodColor.r = 0.75f;
+                foodColor.g = 0.4f;
+                foodColor.b = 0.1f;
+                foodColor.a = 1f;
             }
-            else if (totalTimeCooked > perfectCookingTime * 1.0f)
+            else if (totalTimeCooked > perfectCookingTime * 1.0f && totalTimeCooked < perfectCookingTime * 1.25f)
             {
-                foodColor.g = 1f;
-                foodColor.r = 1f;
-                foodColor.b = 1f;
-                foodColor.a = 0f;
+                foodColor.r = 0.70f;
+                foodColor.g = 0.3f;
+                foodColor.b = 0.0f;
+                foodColor.a = 1f;
             }
-            else if(totalTimeCooked > perfectCookingTime * 1.5f)
+            else if(totalTimeCooked > perfectCookingTime * 1.25 && totalTimeCooked < perfectCookingTime * 1.5f)
+            {
+                foodColor.r = 0f;
+                foodColor.g = 0f;
+                foodColor.b = 0f;
+                foodColor.a = 1f;
+            }
+            else if(totalTimeCooked >= perfectCookingTime * 1.5f)
             {
                 Destroy(gameObject);
             }
@@ -98,7 +106,7 @@ public class BurgerIngredientScript : MonoBehaviour
         if (gameObject.name == "BurgerPatty")
         {
             StartColor();
-            rend = GetComponent<Renderer>();
+            rend = model.GetComponent<Renderer>();
             rend.material.color = foodColor;
         }
     }
@@ -162,7 +170,7 @@ public class BurgerIngredientScript : MonoBehaviour
             if (gameObject.name == "BurgerPatty")
             {
                 StartColor();
-                rend = GetComponent<Renderer>();
+                rend = model.GetComponent<Renderer>();
                 rend.material.color = foodColor;
             }
         }

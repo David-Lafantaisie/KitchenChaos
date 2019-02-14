@@ -30,11 +30,11 @@ public class BurgerDishScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateIngredientPositions();
         if (Vector3.Angle(originalUp, gameObject.transform.TransformDirection(Vector3.up)) > 45.0f && started == true)
         {
             resetBurger();
         }
+        updateIngredientPositions();
     }
 
 
@@ -58,24 +58,31 @@ public class BurgerDishScript : MonoBehaviour
 
     public void removeIngredient(GameObject ingredient, BurgerIngredientScript ingScript)
     {
-        ingScript.setAttached(false);
-        int tempLen = ingredientListLength;
         int index = ingredientsAttached.IndexOf(ingredient);
-        ingredientListLength = index;
-
-        for(int i = index; i < tempLen; i++)
+        if(index != 0)
         {
-            ingredientScripts[i].resetIngredient();
-            ingredientsAttached[i].GetComponent<Rigidbody>().AddForce(new Vector3(
-            Random.Range(-100.0f, 100.0f),//X force
-            Random.Range(0.0f, 30.0f),//Y force
-            Random.Range(-100.0f, 100.0f)//Z force
-            ));
-        }
+            ingScript.setAttached(false);
+            int tempLen = ingredientListLength;
+            ingredientListLength = index;
 
-        ingredientsAttached.RemoveRange(index, tempLen - index);
-        ingredientScripts.RemoveRange(index, tempLen - index);
-        burgerHeight = ingredientScripts[index - 1].getHeightInBurger() + ingredientScripts[index - 1].getHeight();
+            for (int i = index; i < tempLen; i++)
+            {
+                ingredientScripts[i].resetIngredient();
+                ingredientsAttached[i].GetComponent<Rigidbody>().AddForce(new Vector3(
+                Random.Range(-100.0f, 100.0f),//X force
+                Random.Range(0.0f, 30.0f),//Y force
+                Random.Range(-100.0f, 100.0f)//Z force
+                ));
+            }
+
+            ingredientsAttached.RemoveRange(index, tempLen - index);
+            ingredientScripts.RemoveRange(index, tempLen - index);
+            burgerHeight = ingredientScripts[index - 1].getHeightInBurger() + ingredientScripts[index - 1].getHeight();
+        }
+        else
+        {
+            resetBurger();
+        }
     }
 
     public void updateIngredientPositions()
@@ -87,7 +94,7 @@ public class BurgerDishScript : MonoBehaviour
                 if(ingredientScripts[i].getAttached() == true)
                 {
                     ingredientsAttached[i].transform.position =
-                    gameObject.transform.position + new Vector3(0.0f, ingredientScripts[i].getHeightInBurger(), 0.0f);
+                        gameObject.transform.position + new Vector3(0.0f, ingredientScripts[i].getHeightInBurger(), 0.0f);
                     ingredientsAttached[i].transform.rotation = gameObject.transform.rotation;
                 }
             }
@@ -96,6 +103,7 @@ public class BurgerDishScript : MonoBehaviour
 
     void resetBurger()
     {
+        setStarted(false);
         for (int i = 0; i < ingredientListLength; i++)
         {
             ingredientScripts[i].resetIngredient();
@@ -104,7 +112,6 @@ public class BurgerDishScript : MonoBehaviour
         ingredientScripts.Clear();
         ingredientListLength = 0;
         burgerHeight = originalHeight;
-        setStarted(false);
     }
 
     //Sets the height of the burger when you add or take away an ingredient, true if you add, false if you remove

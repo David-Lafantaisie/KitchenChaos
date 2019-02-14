@@ -15,7 +15,7 @@ public class BurgerDishScript : MonoBehaviour
     private bool started = false;
     public List<GameObject> ingredientsAttached;
     public List<BurgerIngredientScript> ingredientScripts;
-    private int ingredientListLength;
+    private int ingredientListLength = 0;
     private float burgerHeight = 0.0f;
     private float originalHeight = 0.0f;
     private Vector3 originalUp;
@@ -56,15 +56,40 @@ public class BurgerDishScript : MonoBehaviour
         ingredientListLength++;
     }
 
+    public void removeIngredient(GameObject ingredient, BurgerIngredientScript ingScript)
+    {
+        ingScript.setAttached(false);
+        int tempLen = ingredientListLength;
+        int index = ingredientsAttached.IndexOf(ingredient);
+        ingredientListLength = index;
+
+        for(int i = index; i < tempLen; i++)
+        {
+            ingredientScripts[i].resetIngredient();
+            ingredientsAttached[i].GetComponent<Rigidbody>().AddForce(new Vector3(
+            Random.Range(-100.0f, 100.0f),//X force
+            Random.Range(0.0f, 30.0f),//Y force
+            Random.Range(-100.0f, 100.0f)//Z force
+            ));
+        }
+
+        ingredientsAttached.RemoveRange(index, tempLen - index);
+        ingredientScripts.RemoveRange(index, tempLen - index);
+        burgerHeight = ingredientScripts[index - 1].getHeightInBurger() + ingredientScripts[index - 1].getHeight();
+    }
+
     public void updateIngredientPositions()
     {
         if (getStarted() == true)
         {
             for (int i = 0; i < ingredientListLength; i++)
             {
-                ingredientsAttached[i].transform.position =
+                if(ingredientScripts[i].getAttached() == true)
+                {
+                    ingredientsAttached[i].transform.position =
                     gameObject.transform.position + new Vector3(0.0f, ingredientScripts[i].getHeightInBurger(), 0.0f);
-                ingredientsAttached[i].transform.rotation = gameObject.transform.rotation;
+                    ingredientsAttached[i].transform.rotation = gameObject.transform.rotation;
+                }
             }
         }
     }

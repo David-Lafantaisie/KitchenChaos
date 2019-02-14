@@ -27,7 +27,6 @@ public class PlayerScript : MonoBehaviour {
     private float speedH = 2.0f;
     private float speedV = 2.0f;
     GameObject[] solidObjects;
-    [SerializeField] GameObject testTable;
 
     //REGULAR VARIABLES
     [SerializeField] private GameObject ovrRig;
@@ -73,7 +72,7 @@ public class PlayerScript : MonoBehaviour {
             Cursor.visible = false;
             activeController.transform.Translate(new Vector3(0.1f, 0.0f, 0.0f));
         }
-        solidObjects = GameObject.FindGameObjectsWithTag("SolidObj");
+        solidObjects = GameObject.FindGameObjectsWithTag("SolidObject");
     }
 
     // Update is called once per frame
@@ -185,6 +184,13 @@ public class PlayerScript : MonoBehaviour {
             //Grabbing the object if pointed at by controller and trigger pressed
             if (Physics.Raycast(ray, out hit, grabRange, interactable) && objHeld == false)
             {
+                if(hit.transform.gameObject.tag == "Ingredient")
+                {
+                    GameObject ingredient = hit.transform.gameObject;
+                    BurgerIngredientScript script = ingredient.GetComponent<BurgerIngredientScript>();
+                    if(script.getAttached() == true)
+                        hit.transform.gameObject.transform.parent.GetComponent<BurgerDishScript>().removeIngredient(ingredient, script);
+                }
                 objHeld = true;
                 currHeldObj = hit.transform.gameObject;
                 currHeldObj.transform.parent = activeController.transform;
@@ -209,7 +215,6 @@ public class PlayerScript : MonoBehaviour {
             }
         }
     }
-
 
     //----------------------------------------------------------//
     //---------------------- TRANSFORMERS ----------------------//

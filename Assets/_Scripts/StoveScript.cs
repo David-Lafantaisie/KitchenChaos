@@ -1,9 +1,10 @@
 ﻿//------------------------------------------------------------//
 //---------------------- KITCHEN CHAOS -----------------------//
-//-------------------- INGREDIENT SCRIPT ---------------------//
+//---------------------- STOVE SCRIPT ------------------------//
 //------------------- By Tyler McMillan ----------------------//  ------>Add your name to this list if you contribute
 //------------------ for PROMACHOS STUDIOS -------------------//
 //------------------------------------------------------------//
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class StoveScript : MonoBehaviour {
     {
         if(col.gameObject.tag == "Ingredient")
         {
-            col.gameObject.GetComponent<BurgerIngredientScript>().itemCooking = true;
+            col.gameObject.GetComponent<BurgerIngredientScript>().setItemCooking(true);
         }
     }
 
@@ -24,15 +25,16 @@ public class StoveScript : MonoBehaviour {
     {
         if (col.gameObject.tag == "Ingredient")
         {
-            col.gameObject.GetComponent<BurgerIngredientScript>().totalTimeCooked += Time.deltaTime;
+            col.gameObject.GetComponent<BurgerIngredientScript>().incrementCookTime();
             col.gameObject.GetComponent<BurgerIngredientScript>().ingredientState();
         }
     }
+
     void OnTriggerExit(Collider col)
     {
         if (col.gameObject.tag == "Ingredient")
         {
-            col.gameObject.GetComponent<BurgerIngredientScript>().itemCooking = false;
+            col.gameObject.GetComponent<BurgerIngredientScript>().setItemCooking(false);
         }
     }
 }

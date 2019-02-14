@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ChoppableItem : MonoBehaviour {
+
 	[SerializeField] private GameObject choppedItem;
 	[SerializeField] private int numberOfChops;
 	private int chopsRemaining;
-
-
+    
 	// Use this for initialization
 	void Start () {
 		chopsRemaining = numberOfChops;
@@ -25,13 +25,16 @@ public class ChoppableItem : MonoBehaviour {
 		//also maybe change the root transform for spawning to the knife's transform?
 		Vector3 spawn = new Vector3(this.transform.position.x + (Random.Range(-0.2f, 0.2f)),
 			this.transform.position.y + (Random.Range(-0.2f, 0.2f)), this.transform.position.z + (Random.Range(-0.2f, 0.2f)));
-		GameObject result = Instantiate (choppedItem, spawn, this.transform.rotation);
+		GameObject result = Instantiate (choppedItem, spawn, choppedItem.transform.rotation);
 		//This line launches the spawned item in a random direction... needs HEAVY refinement though
-		result.GetComponent<Rigidbody> ().AddForce (new Vector3(Random.Range(-100.0f, 100.0f), 
-			Random.Range(0.0f, 200.0f), Random.Range(-100.0f, 30.0f)));
-		Resize ();
+		result.GetComponent<Rigidbody>().AddForce(new Vector3(
+            Random.Range(-30.0f, 30.0f),//X force
+			Random.Range(0.0f, 30.0f),//Y force
+            Random.Range(-30.0f, 30.0f)//Z force
+            ));
+		Resize();
 		if (chopsRemaining <= 0)
-			Kill ();
+			Kill();
 	}
 
 	void Resize() {
@@ -41,6 +44,6 @@ public class ChoppableItem : MonoBehaviour {
 	}
 
 	void Kill() {
-		Destroy (this.gameObject);
+		Destroy(this.gameObject);
 	}
 }

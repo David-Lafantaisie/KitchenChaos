@@ -9,6 +9,7 @@ TagManager:
   - DishSpawn
   - SuperIngredient
   - Utensil
+  - SolidObject
   layers:
   - Default
   - TransparentFX

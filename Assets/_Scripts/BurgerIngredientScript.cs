@@ -2,7 +2,7 @@
 //---------------------- KITCHEN CHAOS -----------------------//
 //-------------------- INGREDIENT SCRIPT ---------------------//
 //------------------- By David Lafantaisie -------------------// ------>Add your name to this list if you contribute
-//---------------------- Tyler McMillan ----------------------// 
+//--------------------- & Tyler McMillan ---------------------// 
 //------------------ for PROMACHOS STUDIOS -------------------//
 //------------------------------------------------------------//
 
@@ -17,19 +17,20 @@ public class BurgerIngredientScript : MonoBehaviour
     //---------------------- VARIABLES ----------------------//
     //-------------------------------------------------------//
 
-    [SerializeField] Collider collider;
+    [SerializeField] private Collider collider;
     private bool attached = false;
     private float height;
     private float heightInBurger = 0.0f;
     private float attachDistance = 0.25f;
     private bool inDistance = false;
+    public Quaternion originalRotation;
 
     //Cooking Vars
-    public float totalTimeCooked = 0f;
-    [SerializeField] float prefectCookingTime = 0f;
-    public bool itemCooking = false;
+    [SerializeField] private float perfectCookingTime = 0.0f;
+    private float totalTimeCooked = 0.0f;
+    private bool itemCooking = false;
     public Color foodColor = Color.red;
-    public Renderer rend;
+    private Renderer rend;
 
     void StartColor()
     {
@@ -38,58 +39,58 @@ public class BurgerIngredientScript : MonoBehaviour
             if (totalTimeCooked == 0.0f)
             {
                 foodColor.g = 0f;
-                foodColor.r = 0f;
-                foodColor.b = 0f;
+                foodColor.r = 0.5f;
+                foodColor.b = 0.5f;
                 foodColor.a = 0f;
             }
-            else if (totalTimeCooked <= prefectCookingTime * 0.2f)
+            else if (totalTimeCooked <= perfectCookingTime * 0.2f)
             {
                 foodColor.g = 1f;
                 foodColor.r = 0f;
                 foodColor.b = 0f;
                 foodColor.a = 0f;
             }
-            else if (totalTimeCooked <= prefectCookingTime * 0.4f)
+            else if (totalTimeCooked <= perfectCookingTime * 0.4f)
             {
                 foodColor.g = 0f;
                 foodColor.r = 1f;
                 foodColor.b = 0f;
                 foodColor.a = 0f;
             }
-            else if (totalTimeCooked <= prefectCookingTime * 0.6f)
+            else if (totalTimeCooked <= perfectCookingTime * 0.6f)
             {
                 foodColor.g = 0f;
                 foodColor.r = 0f;
                 foodColor.b = 1f;
                 foodColor.a = 0f;
             }
-            else if (totalTimeCooked <= prefectCookingTime * 0.8f)
+            else if (totalTimeCooked <= perfectCookingTime * 0.8f)
             {
                 foodColor.g = 0f;
                 foodColor.r = 1f;
                 foodColor.b = 1f;
                 foodColor.a = 0f;
             }
-            else if (totalTimeCooked <= prefectCookingTime * 1.0f)
+            else if (totalTimeCooked <= perfectCookingTime * 1.0f)
             {
                 foodColor.g = 1f;
                 foodColor.r = 1f;
                 foodColor.b = 0f;
                 foodColor.a = 0f;
             }
-            else if (totalTimeCooked > prefectCookingTime * 1.0f)
+            else if (totalTimeCooked > perfectCookingTime * 1.0f)
             {
                 foodColor.g = 1f;
                 foodColor.r = 1f;
                 foodColor.b = 1f;
                 foodColor.a = 0f;
             }
-
-
+            else if(totalTimeCooked > perfectCookingTime * 1.5f)
+            {
+                Destroy(gameObject);
+            }
         }
     }
-
-
 
     private void Start()
     {
@@ -101,7 +102,6 @@ public class BurgerIngredientScript : MonoBehaviour
             rend.material.color = foodColor;
         }
     }
-
 
     public void checkAttach()
     {
@@ -117,18 +117,14 @@ public class BurgerIngredientScript : MonoBehaviour
                 if (inDistance == true)
                 {
                     dishS.addIngredient(gameObject, this);
-
-
-
                     dishS.setBurgerHeight(height, true);
                     heightInBurger = dishS.getBurgerHeight() - height;
+
                     gameObject.transform.position = GameManager.instance.dishes[i].transform.position + new Vector3(0.0f, dishS.getBurgerHeight() - height, 0.0f);
-
-
-
                     gameObject.transform.rotation = GameManager.instance.dishes[i].transform.rotation;
                     gameObject.GetComponent<Rigidbody>().useGravity = false;
                     gameObject.transform.parent = GameManager.instance.dishes[i].transform;
+
                     setAttached(true);
                     if (dishS.getStarted() == false)
                         dishS.setStarted(true);
@@ -137,7 +133,6 @@ public class BurgerIngredientScript : MonoBehaviour
         }
     }
 
-   
     //-----------------------------------------------------//
     //---------------------- SETTERS ----------------------//
     //-----------------------------------------------------//
@@ -149,20 +144,20 @@ public class BurgerIngredientScript : MonoBehaviour
 
     public void resetIngredient()
     {
+        setAttached(false);
         heightInBurger = 0.0f;
         gameObject.GetComponent<Rigidbody>().useGravity = true;
         gameObject.GetComponent<Rigidbody>().isKinematic = false;
         gameObject.transform.parent = null;
-        setAttached(false);
     }
 
     public void ingredientState()
     {
-        if(prefectCookingTime == 0 && totalTimeCooked > 0)
+        if(perfectCookingTime == 0 && totalTimeCooked > 0)
         {
             Destroy(gameObject);
         }
-        else if(prefectCookingTime > 0)
+        else if(perfectCookingTime > 0)
         {
             if (gameObject.name == "BurgerPatty")
             {
@@ -173,7 +168,15 @@ public class BurgerIngredientScript : MonoBehaviour
         }
     }
     
+    public void setItemCooking(bool cooking)
+    {
+        itemCooking = cooking;
+    }
 
+    public void incrementCookTime()
+    {
+        totalTimeCooked += Time.deltaTime;
+    }
 
     //-----------------------------------------------------//
     //---------------------- GETTERS ----------------------//
@@ -182,6 +185,11 @@ public class BurgerIngredientScript : MonoBehaviour
     public bool getAttached()
     {
         return attached;
+    }
+
+    public bool getItemCooking()
+    {
+        return itemCooking;
     }
 
     public float getHeight()
@@ -202,5 +210,6 @@ public class BurgerIngredientScript : MonoBehaviour
     void initHeight()
     {
         height = collider.bounds.extents.y;
+        originalRotation = transform.rotation;
     }
 }

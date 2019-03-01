@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
     public List<GameObject> dishes;
     public List<BurgerDishScript> dishScripts;
 
+
+
     //Private
     [SerializeField] private GameObject dish;
     private int stage = 1;
@@ -96,4 +98,15 @@ public class GameManager : MonoBehaviour {
         return dishListLength;
     }
 
+}
+
+//REMEMBER: IF YOU ARE APPENDING THE ENUMERATION, ADD TO THE END, NOT THE BEGINNING OR IN BETWEEN
+public enum BurgerIngType //add the rest later as more ingredients are added to the game
+{
+	BUN, //idk if top and bottom bun should be split for this purpose?
+	HAMBURGER,
+	LETTUCE,
+	TOMATO,
+	ONION,
+	CHEESE
 }

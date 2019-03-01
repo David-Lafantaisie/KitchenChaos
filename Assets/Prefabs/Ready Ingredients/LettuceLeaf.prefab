@@ -127,3 +127,4 @@ MonoBehaviour:
   model: {fileID: 0}
   originalRotation: {x: 0, y: 0, z: 0, w: 0}
   perfectCookingTime: 0
+  type: 2

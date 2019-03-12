@@ -51,5 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 430393ac9fc10dc42bcaca1b26a703eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BurgerIngValue: 000000000a0000000a0000000a0000000a0000000a000000
+  BurgerIngValue: 000000000a0000000a0000000a0000000a0000000a00000000000000
   PickyAboutCookTime: 1

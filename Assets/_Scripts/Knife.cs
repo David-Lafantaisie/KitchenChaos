@@ -12,6 +12,7 @@ public class Knife : MonoBehaviour {
         {
             inside = true;
             other.gameObject.GetComponent<ChoppableItem>().Chop(this.transform);
+            SoundManager.instance.playChopSound();
         }
 	}
 

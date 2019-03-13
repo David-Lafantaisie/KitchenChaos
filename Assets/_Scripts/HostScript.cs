@@ -56,7 +56,11 @@ public class HostScript : MonoBehaviour {
             sampleAverage += Mathf.Clamp((samples[i] * (i * i)), 0, 1);
         }
         sampleAverage = sampleAverage / 64;
-        hostMouth.color = new Color(sampleAverage, 0.0f, 0.0f, 0.0f);
+        hostMouth.color = new Color(sampleAverage*1.2f, 0.0f, 0.0f, 0.0f);
+        //if (sampleAverage >= 0.45)
+            //hostMouth.color = new Color(1.0f, 0.0f, 0.0f, 0.0f);
+        //else
+            //hostMouth.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
     private void MostInterestingPoint() // random is working better than the system i came up with 

@@ -10,6 +10,9 @@ TagManager:
   - SuperIngredient
   - Utensil
   - SolidObject
+  - Judge
+  - Button
+  - ScoreUI
   layers:
   - Default
   - TransparentFX

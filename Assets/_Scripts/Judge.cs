@@ -24,18 +24,19 @@ public class Judge : MonoBehaviour {
 		float returnScore = 0;
 		int numIngredients = 0;
 		int cookTimeModifier = 0;
-		if (burger.getIngListLength () != 0) {
+		if (burger.getIngListLength () > 0) {
 			for (int i = 0; i < burger.getIngListLength (); i++) {
 				BurgerIngredientScript testIngredient = burger.ingredientScripts [i];
 				cumulativeScore += BurgerIngValue [(int)testIngredient.getIngredientType ()];
+				Debug.Log ("JUDGE " + this.gameObject + "'S SCORE FOR INGREDIENT " + testIngredient.getIngredientType() + " IS " + BurgerIngValue [(int)testIngredient.getIngredientType ()]);
 				if (testIngredient.getIngredientType () == BurgerIngType.BUN && i != 0 ||
 				    testIngredient.getIngredientType () == BurgerIngType.TOPBUN && i != burger.getIngListLength () - 1) {
-					cumulativeScore -= 2;
+					cumulativeScore -= 5;
 				} else if (testIngredient.getIngredientType () != BurgerIngType.BUN && testIngredient.getIngredientType () != BurgerIngType.TOPBUN) {
 					numIngredients++;
 					if (testIngredient.getIngredientType () == BurgerIngType.HAMBURGER) {
 						if (i != 1) {
-							cumulativeScore -= 1;
+							cumulativeScore -= 2;
 						}
 						if (PickyAboutCookTime) {
 							cookTimeModifier = testIngredient.getCookScore ();

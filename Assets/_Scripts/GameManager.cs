@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -35,6 +36,8 @@ public class GameManager : MonoBehaviour {
     private int dishListLength;
 	private int numJudges = 0; //THIS ISNT BEING USED RN, USE FOR IF/WHEN WE INCORPORATE MULTIPLE JUDGES AT ONCE
     private difficulty mode = difficulty.EASY;
+	private bool sentForJudges = false;
+	private Text scoreUI;
 
     //----------------------------------------------------------//
     //---------------------- INITIALIZERS ----------------------//
@@ -66,6 +69,7 @@ public class GameManager : MonoBehaviour {
 		judgeScripts [0].SetActive (true);
 		Debug.Log (judges[0] + "SET AS ACTIVE JUDGE");
 		numJudges++;
+		scoreUI = GameObject.FindWithTag ("ScoreUI").GetComponent<Text>();
 
         for (int i = 0; i < (int)mode; i++)
         {
@@ -82,11 +86,15 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void judgeBurgers()
+	public void judgeBurgers()
 	{
-		for (int i = 0; i < dishListLength; i++) {
-			score += judgeScripts [0].JudgeBurger (dishScripts[i]);
-			Debug.Log ("FINAL SCORE = " + score);
+		if (!sentForJudges) {
+			for (int i = 0; i < dishListLength; i++) {
+				score += judgeScripts [0].JudgeBurger (dishScripts [i]);
+				Debug.Log ("FINAL SCORE = " + score);
+			}
+			scoreUI.text = score.ToString();
+			sentForJudges = true;
 		}
 	}
 

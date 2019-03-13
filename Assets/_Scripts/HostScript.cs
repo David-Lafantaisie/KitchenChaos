@@ -30,6 +30,7 @@ public class HostScript : MonoBehaviour {
         InvokeRepeating("MostInterestingPoint", 1.0f, 6.0f);
         hostMouth = hostHeadCube.GetComponent<MeshRenderer>().materials[2];
         SoundManager.instance.playMainTheme(); // starts main theme
+        SoundManager.instance.playMainTheme(); //starts main theme
     }
 
     // Update is called once per frame

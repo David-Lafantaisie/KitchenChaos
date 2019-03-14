@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -44,6 +45,7 @@ public class PlayerScript : MonoBehaviour {
     private LineRenderer lineReticle;
     private LayerMask interactable;
 	private LayerMask staticItem;
+    private LayerMask userInterface;
     private Vector3 originalForward;
     private bool facingForward = true;
 	private GameManager manager;
@@ -132,8 +134,37 @@ public class PlayerScript : MonoBehaviour {
     //Handles input, must get input first!
     void handleInput()
     {
+        checkUI();
         handleTrigger();
         handleTouch();
+    }
+
+    GameObject aimedAt = null;
+
+    void checkUI()
+    {
+        Ray ray = new Ray(activeController.transform.position, activeController.transform.forward);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit, 1000, userInterface) && objHeld == false)
+        {
+            Text wText = hit.transform.gameObject.GetComponent<WorldUIObject>().getWorldText();
+            GameObject light = hit.transform.gameObject.GetComponent<WorldUIObject>().getUILight();
+            wText.enabled = true;
+            light.SetActive(true);
+            aimedAt = hit.transform.gameObject;
+            if (triggerPressed)
+                hit.transform.gameObject.GetComponent<WorldUIObject>().activate();
+        }
+        else
+        {
+            if(aimedAt != null)
+            {
+                aimedAt.transform.gameObject.GetComponent<WorldUIObject>().getWorldText().enabled = false;
+                aimedAt.transform.gameObject.GetComponent<WorldUIObject>().getUILight().SetActive(false);
+            }
+            aimedAt = null;
+        }
     }
 
     //Handles any touch related input
@@ -349,6 +380,7 @@ public class PlayerScript : MonoBehaviour {
     void initLayerMasks()
     {
         interactable = LayerMask.GetMask("Interactable");
-		staticItem = LayerMask.GetMask ("Static");
+		staticItem = LayerMask.GetMask("Static");
+        userInterface = LayerMask.GetMask("UI");
     }
 }

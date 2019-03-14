@@ -241,7 +241,7 @@ public class PlayerScript : MonoBehaviour {
 			{
 				if(hit.transform.gameObject.tag == "Button")
 				{
-					manager.judgeBurgers ();
+					manager.judgeBurgers();
 				}
 			}
         }

@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour {
 	public List<Judge> judgeScripts;
 	public float score;
 
+    private float minutesInRound = 2.0f;
+    private float secondsInMin = 60.0f;
+
 
 
     //Private
@@ -81,6 +84,28 @@ public class GameManager : MonoBehaviour {
 
 	void Update() //JUST USING THIS TO TEST THE JUDGE SYSTEM
 	{
+        if(!sentForJudges)
+        {
+            if (minutesInRound <= 0.0f && secondsInMin <= 0.0f)
+            {
+                secondsInMin = 0.0f;
+                minutesInRound = 0.0f;
+            }
+            else
+            {
+                if (secondsInMin == 60.0f)
+                    minutesInRound--;
+                secondsInMin -= Time.deltaTime;
+                if (secondsInMin <= 0)
+                    secondsInMin = 60.0f;
+            }
+            scoreUI.fontSize = 160;
+            if(secondsInMin >= 10)
+                scoreUI.text = minutesInRound.ToString() + ":" + secondsInMin.ToString("F0");
+            else
+                scoreUI.text = minutesInRound.ToString() + ":0" + secondsInMin.ToString("F0");
+        }
+
 		if (Input.GetKeyDown (KeyCode.X)) {
 			judgeBurgers ();
 		}
@@ -93,8 +118,8 @@ public class GameManager : MonoBehaviour {
 				score += judgeScripts [0].JudgeBurger (dishScripts [i]);
 				Debug.Log ("FINAL SCORE = " + score);
 			}
-            scoreUI.fontSize = 70;
-			scoreUI.text = "HIGH SCOrE\n" + score.ToString();
+            scoreUI.fontSize = 60;
+			scoreUI.text = "YOUR FINAL SCOrE\n" + score.ToString();
 			sentForJudges = true;
 		}
 	}

@@ -140,7 +140,7 @@ public class PlayerScript : MonoBehaviour {
     void handleTouch()
     {
         //If player is currently holding an object they will be able to move it forward or backwards
-        if (objHeld)
+        if (objHeld && currHeldObj.tag != "utensil")
         {
             //Moving held object closer or farther
             if (touchUp)//Moves object farther away from controller, stopping at max reach
@@ -184,6 +184,7 @@ public class PlayerScript : MonoBehaviour {
 
         if (triggerPressed == true)
         {
+            lineReticle.enabled = false;
             //Grabbing the object if pointed at by controller and trigger pressed
             if (Physics.Raycast(ray, out hit, grabRange, interactable) && objHeld == false)
             {
@@ -194,6 +195,10 @@ public class PlayerScript : MonoBehaviour {
                     if(script.getAttached() == true)
                         hit.transform.gameObject.transform.parent.GetComponent<BurgerDishScript>().removeIngredient(ingredient, script);
                 }
+                //else if(hit.transform.gameObject.tag == "Utensil")
+                //{
+                //    hit.transform.gameObject.transform.SetPositionAndRotation(new Vector3(activeController.transform.position.x, activeController.transform.position.y) + (activeController.transform.forward/2), new Quaternion(activeController.transform.rotation.x, activeController.transform.rotation.y, activeController.transform.rotation.z, activeController.transform.rotation.w));
+                //}
                 objHeld = true;
                 currHeldObj = hit.transform.gameObject;
                 currHeldObj.transform.parent = activeController.transform;
@@ -210,6 +215,7 @@ public class PlayerScript : MonoBehaviour {
         }
         else if (triggerPressed == false)
         {
+            lineReticle.enabled = true;
             objHeld = false;
             //If holding an object, it will be released
             if (currHeldObj != null)

@@ -93,7 +93,8 @@ public class GameManager : MonoBehaviour {
 				score += judgeScripts [0].JudgeBurger (dishScripts [i]);
 				Debug.Log ("FINAL SCORE = " + score);
 			}
-			scoreUI.text = score.ToString();
+            scoreUI.fontSize = 70;
+			scoreUI.text = "HIGH SCOrE\n" + score.ToString();
 			sentForJudges = true;
 		}
 	}

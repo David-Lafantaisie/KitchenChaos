@@ -280,6 +280,10 @@ public class PlayerScript : MonoBehaviour {
             triggerPressed = Input.GetMouseButton(0);
             touchUp = Input.GetKey(KeyCode.W);
             touchDown = Input.GetKey(KeyCode.S);
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
             //Rotate camera based on mouse position
             yaw += speedH * Input.GetAxis("Mouse X");
             pitch -= speedV * Input.GetAxis("Mouse Y");

@@ -195,10 +195,11 @@ public class PlayerScript : MonoBehaviour {
                     if(script.getAttached() == true)
                         hit.transform.gameObject.transform.parent.GetComponent<BurgerDishScript>().removeIngredient(ingredient, script);
                 }
-                //else if(hit.transform.gameObject.tag == "Utensil")
-                //{
-                //    hit.transform.gameObject.transform.SetPositionAndRotation(new Vector3(activeController.transform.position.x, activeController.transform.position.y) + (activeController.transform.forward/2), new Quaternion(activeController.transform.rotation.x, activeController.transform.rotation.y, activeController.transform.rotation.z, activeController.transform.rotation.w));
-                //}
+                else if (hit.transform.gameObject.tag == "Utensil")
+                {
+                    GameObject controller = activeController.gameObject.GetComponent<OVRTrackedRemote>().m_modelOculusGoController;
+                    hit.transform.gameObject.transform.SetPositionAndRotation(controller.transform.position + (controller.transform.forward * 0.5f), new Quaternion(controller.transform.rotation.x, controller.transform.rotation.y, controller.transform.rotation.z, controller.transform.rotation.w));
+                }
                 objHeld = true;
                 currHeldObj = hit.transform.gameObject;
                 currHeldObj.transform.parent = activeController.transform;

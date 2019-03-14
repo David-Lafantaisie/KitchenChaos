@@ -43,8 +43,10 @@ public class PlayerScript : MonoBehaviour {
     private GameObject currHeldObj = null;
     private LineRenderer lineReticle;
     private LayerMask interactable;
+	private LayerMask staticItem;
     private Vector3 originalForward;
     private bool facingForward = true;
+	private GameManager manager;
 
     //Input variables
     private Vector2 touchPosition;
@@ -59,6 +61,7 @@ public class PlayerScript : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+		manager = GameManager.instance;
         initControllerHand();
         initLineReticle();
         initLayerMasks();
@@ -197,6 +200,13 @@ public class PlayerScript : MonoBehaviour {
                 currHeldObj.GetComponent<Rigidbody>().useGravity = false;
                 currHeldObj.GetComponent<Rigidbody>().isKinematic = true;
             }
+			else if (Physics.Raycast(ray, out hit, grabRange, staticItem) && objHeld == false)
+			{
+				if(hit.transform.gameObject.tag == "Button")
+				{
+					manager.judgeBurgers ();
+				}
+			}
         }
         else if (triggerPressed == false)
         {
@@ -332,5 +342,6 @@ public class PlayerScript : MonoBehaviour {
     void initLayerMasks()
     {
         interactable = LayerMask.GetMask("Interactable");
+		staticItem = LayerMask.GetMask ("Static");
     }
 }

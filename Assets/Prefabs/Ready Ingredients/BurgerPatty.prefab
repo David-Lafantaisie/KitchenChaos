@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 65107393888897370}
+  model: {fileID: 0}
   originalRotation: {x: 0, y: 0, z: 0, w: 0}
   perfectCookingTime: 10
-  foodColor: {r: 1, g: 0, b: 0, a: 1}
+  type: 1

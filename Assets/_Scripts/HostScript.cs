@@ -25,6 +25,7 @@ public class HostScript : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+		FindObjectOfType<audioManager>().Play("Applause+Intro");
         agent = GetComponent<NavMeshAgent>();
         agent.destination = waypoints[0].transform.position;
         InvokeRepeating("MostInterestingPoint", 1.0f, 6.0f);

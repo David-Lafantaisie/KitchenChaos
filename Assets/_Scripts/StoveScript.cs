@@ -18,6 +18,7 @@ public class StoveScript : MonoBehaviour {
         if(col.gameObject.tag == "Ingredient")
         {
             col.gameObject.GetComponent<BurgerIngredientScript>().setItemCooking(true);
+			FindObjectOfType<audioManager>().Play("Sizzling");
         }
     }
 
@@ -27,6 +28,7 @@ public class StoveScript : MonoBehaviour {
         {
             col.gameObject.GetComponent<BurgerIngredientScript>().incrementCookTime();
             col.gameObject.GetComponent<BurgerIngredientScript>().ingredientState();
+
         }
     }
 

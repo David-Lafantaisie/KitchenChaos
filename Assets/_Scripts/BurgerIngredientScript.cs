@@ -33,6 +33,8 @@ public class BurgerIngredientScript : MonoBehaviour
     private Color foodColor = Color.white;
     private Renderer rend;
 
+	[SerializeField] private BurgerIngType type;
+
     void StartColor()
     {
         if (gameObject.name == "BurgerPatty")
@@ -209,6 +211,29 @@ public class BurgerIngredientScript : MonoBehaviour
     {
         return heightInBurger;
     }
+
+	public BurgerIngType getIngredientType()
+	{
+		return type;
+	}
+
+	public int getCookScore()
+	{
+		if (totalTimeCooked <= perfectCookingTime * 0.4f) {
+			return -2;
+		} else if (totalTimeCooked <= perfectCookingTime * 0.6f) {
+			return -1;
+		} else if (totalTimeCooked <= perfectCookingTime * 0.8f) {
+			return 0;
+		} else if (totalTimeCooked <= perfectCookingTime * 1.0f) {
+			return 1;
+		} else if (totalTimeCooked > perfectCookingTime * 1.0f && totalTimeCooked < perfectCookingTime * 1.25f) {
+			return 0;
+		} else if (totalTimeCooked > perfectCookingTime * 1.25) {
+			return -1;
+		} else
+			return 0;
+	}
 
 
     //----------------------------------------------------------//

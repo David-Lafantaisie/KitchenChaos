@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -43,8 +44,11 @@ public class PlayerScript : MonoBehaviour {
     private GameObject currHeldObj = null;
     private LineRenderer lineReticle;
     private LayerMask interactable;
+	private LayerMask staticItem;
+    private LayerMask userInterface;
     private Vector3 originalForward;
     private bool facingForward = true;
+	private GameManager manager;
 
     //Input variables
     private Vector2 touchPosition;
@@ -59,6 +63,7 @@ public class PlayerScript : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+		manager = GameManager.instance;
         initControllerHand();
         initLineReticle();
         initLayerMasks();
@@ -129,15 +134,44 @@ public class PlayerScript : MonoBehaviour {
     //Handles input, must get input first!
     void handleInput()
     {
+        checkUI();
         handleTrigger();
         handleTouch();
+    }
+
+    GameObject aimedAt = null;
+
+    void checkUI()
+    {
+        Ray ray = new Ray(activeController.transform.position, activeController.transform.forward);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit, 1000, userInterface) && objHeld == false)
+        {
+            Text wText = hit.transform.gameObject.GetComponent<WorldUIObject>().getWorldText();
+            GameObject light = hit.transform.gameObject.GetComponent<WorldUIObject>().getUILight();
+            wText.enabled = true;
+            light.SetActive(true);
+            aimedAt = hit.transform.gameObject;
+            if (triggerPressed)
+                hit.transform.gameObject.GetComponent<WorldUIObject>().activate();
+        }
+        else
+        {
+            if(aimedAt != null)
+            {
+                aimedAt.transform.gameObject.GetComponent<WorldUIObject>().getWorldText().enabled = false;
+                aimedAt.transform.gameObject.GetComponent<WorldUIObject>().getUILight().SetActive(false);
+            }
+            aimedAt = null;
+        }
     }
 
     //Handles any touch related input
     void handleTouch()
     {
         //If player is currently holding an object they will be able to move it forward or backwards
-        if (objHeld)
+        if (objHeld && currHeldObj.tag != "utensil")
         {
             //Moving held object closer or farther
             if (touchUp)//Moves object farther away from controller, stopping at max reach
@@ -181,6 +215,7 @@ public class PlayerScript : MonoBehaviour {
 
         if (triggerPressed == true)
         {
+            lineReticle.enabled = false;
             //Grabbing the object if pointed at by controller and trigger pressed
             if (Physics.Raycast(ray, out hit, grabRange, interactable) && objHeld == false)
             {
@@ -191,15 +226,28 @@ public class PlayerScript : MonoBehaviour {
                     if(script.getAttached() == true)
                         hit.transform.gameObject.transform.parent.GetComponent<BurgerDishScript>().removeIngredient(ingredient, script);
                 }
+                else if (hit.transform.gameObject.tag == "Utensil")
+                {
+                    GameObject controller = activeController.gameObject.GetComponent<OVRTrackedRemote>().m_modelOculusGoController;
+                    hit.transform.gameObject.transform.SetPositionAndRotation(controller.transform.position + (controller.transform.forward * 0.5f), new Quaternion(controller.transform.rotation.x, controller.transform.rotation.y, controller.transform.rotation.z, controller.transform.rotation.w));
+                }
                 objHeld = true;
                 currHeldObj = hit.transform.gameObject;
                 currHeldObj.transform.parent = activeController.transform;
                 currHeldObj.GetComponent<Rigidbody>().useGravity = false;
                 currHeldObj.GetComponent<Rigidbody>().isKinematic = true;
             }
+			else if (Physics.Raycast(ray, out hit, grabRange, staticItem) && objHeld == false)
+			{
+				if(hit.transform.gameObject.tag == "Button")
+				{
+					manager.judgeBurgers();
+				}
+			}
         }
         else if (triggerPressed == false)
         {
+            lineReticle.enabled = true;
             objHeld = false;
             //If holding an object, it will be released
             if (currHeldObj != null)
@@ -280,6 +328,10 @@ public class PlayerScript : MonoBehaviour {
             triggerPressed = Input.GetMouseButton(0);
             touchUp = Input.GetKey(KeyCode.W);
             touchDown = Input.GetKey(KeyCode.S);
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
             //Rotate camera based on mouse position
             yaw += speedH * Input.GetAxis("Mouse X");
             pitch -= speedV * Input.GetAxis("Mouse Y");
@@ -328,5 +380,7 @@ public class PlayerScript : MonoBehaviour {
     void initLayerMasks()
     {
         interactable = LayerMask.GetMask("Interactable");
+		staticItem = LayerMask.GetMask("Static");
+        userInterface = LayerMask.GetMask("UI");
     }
 }

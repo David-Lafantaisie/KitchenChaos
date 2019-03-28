@@ -6,11 +6,12 @@ public class ChoppableItem : MonoBehaviour {
 
 	[SerializeField] private GameObject choppedItem;
 	[SerializeField] private int numberOfChops;
+    [SerializeField] GameObject nextTomato = null;
 	private int chopsRemaining;
     
 	// Use this for initialization
 	void Start () {
-		chopsRemaining = numberOfChops;
+        chopsRemaining = numberOfChops;
 	}
 	
 	// Update is called once per frame
@@ -32,9 +33,17 @@ public class ChoppableItem : MonoBehaviour {
 			Random.Range(0.0f, 30.0f),//Y force
             Random.Range(-30.0f, 30.0f)//Z force
             ));
-		Resize();
+        Resize();
+
 		if (chopsRemaining <= 0)
-			Kill();
+        {
+            if(nextTomato != null)
+            {
+                Instantiate(nextTomato, gameObject.transform.position, gameObject.transform.rotation).transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+            }
+            //hello
+            Kill();
+        }
 	}
 
 	void Resize() {

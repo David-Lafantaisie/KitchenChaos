@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Scenes/protoChopping.unity
-    guid: 4f0f77fdd7fbea343b528fbe18934f37
+    path: Assets/_Scenes/protoLevelAlpha.unity
+    guid: 0c6c066a2c09c85469441f4ec95e864d

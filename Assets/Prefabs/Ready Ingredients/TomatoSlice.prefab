@@ -124,8 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 65830583307671574}
-  totalTimeCooked: 0
-  prefectCookingTime: 0
-  itemCooking: 0
-  foodColor: {r: 1, g: 0, b: 0, a: 1}
-  rend: {fileID: 0}
+  model: {fileID: 0}
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
+  perfectCookingTime: 0
+  type: 3

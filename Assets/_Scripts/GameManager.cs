@@ -163,11 +163,14 @@ public class GameManager : MonoBehaviour {
 //REMEMBER: IF YOU ARE APPENDING THE ENUMERATION, ADD TO THE END, NOT THE BEGINNING OR IN BETWEEN
 public enum BurgerIngType //add the rest later as more ingredients are added to the game
 {
-	BUN, //idk if top and bottom bun should be split for this purpose?
+	BUN,
 	HAMBURGER,
 	LETTUCE,
 	TOMATO,
 	ONION,
 	CHEESE,
-	TOPBUN
+	TOPBUN,
+	PICKLE,
+	JALAPENO,
+	BACON
 }

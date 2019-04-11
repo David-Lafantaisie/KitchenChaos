@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour {
 		numJudges++;
 		scoreUI = GameObject.FindWithTag ("ScoreUI").GetComponent<Text>();
 
+
         for (int i = 0; i < (int)mode; i++)
         {
             dishes.Add(Instantiate(dish, dishSpawns[i].transform.position, dishSpawns[i].transform.rotation));

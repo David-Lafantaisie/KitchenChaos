@@ -65,10 +65,15 @@ public class PlayerScript : MonoBehaviour {
     private int objOn = 0;
     public GameObject foodSpawnLoc;
     public GameObject[] foodPrefabs;
+    private bool clickButton = false;
+    public Image ingredientImage;
+    public Sprite[] ingredientPNG;
+
 
     // Use this for initialization
     void Start() {
-		manager = GameManager.instance;
+       
+        manager = GameManager.instance;
         initControllerHand();
         initLineReticle();
         initLayerMasks();
@@ -248,57 +253,64 @@ public class PlayerScript : MonoBehaviour {
                 {
                     manager.judgeBurgers();
                 }
-                if (hit.transform.gameObject.tag == "leftButton")
+                if (clickButton == false)
                 {
-                    triggerPressed = false;
-                    if (objOn > 0)
+                    if (hit.transform.gameObject.tag == "leftButton")
                     {
-                        objOn--;
+                        triggerPressed = false;
+                        if (objOn > 0)
+                        {
+                            objOn--;
+                        }
+                        else
+                        {
+                            objOn = getFoodLength()-1;
+                        }
+                        //Change image on spawner
                     }
-                    else
+                    if (hit.transform.gameObject.tag == "rightButton")
                     {
-                        objOn = getFoodLength();
+                        triggerPressed = false;
+                        if (objOn < getFoodLength())
+                        {
+                            objOn++;
+                        }
+                        else
+                        {
+                            objOn = 0;
+                        }
+                        //Change image on spawner
                     }
-                    //Change image on spawner
-                }
-                if (hit.transform.gameObject.tag == "rightButton")
-                {
-                    triggerPressed = false;
-                    if (objOn < getFoodLength())
+                    if (hit.transform.gameObject.tag == "spawnButton")
                     {
-                        objOn++;
+                        triggerPressed = false;
+                        spawnFood(objOn);
                     }
-                    else
-                    {
-                        objOn = 0;
-                    }
-                    //Change image on spawner
-                }
-                if (hit.transform.gameObject.tag == "spawnButton")
-                {
-                    triggerPressed = false;
-                    spawnFood(objOn);
-                }
-            }
-            else if (triggerPressed == false)
-            {
-                lineReticle.enabled = true;
-                objHeld = false;
-                //If holding an object, it will be released
-                if (currHeldObj != null)
-                {
-                    currHeldObj.transform.parent = null;
-                    currHeldObj.GetComponent<Rigidbody>().isKinematic = false;
-                    currHeldObj.GetComponent<Rigidbody>().useGravity = true;
-                    if (currHeldObj.tag == "Ingredient")
-                    {
-                        currHeldObj.GetComponent<BurgerIngredientScript>().checkAttach();
-                    }
-                    currHeldObj = null;
+                    ingredientImage.sprite = ingredientPNG[objOn];
+                    clickButton = true;
                 }
             }
         }
-    }
+        else if (triggerPressed == false)
+        {
+            clickButton = false;
+            lineReticle.enabled = true;
+            objHeld = false;
+            //If holding an object, it will be released
+            if (currHeldObj != null)
+            {
+                currHeldObj.transform.parent = null;
+                currHeldObj.GetComponent<Rigidbody>().isKinematic = false;
+                currHeldObj.GetComponent<Rigidbody>().useGravity = true;
+                if (currHeldObj.tag == "Ingredient")
+                {
+                    currHeldObj.GetComponent<BurgerIngredientScript>().checkAttach();
+                }
+                currHeldObj = null;
+            }
+        }
+        }
+    
     //----------------------------------------------------------//
     //---------------------- TRANSFORMERS ----------------------//
     //----------------------------------------------------------//

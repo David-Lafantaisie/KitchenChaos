@@ -27616,33 +27616,33 @@ MonoBehaviour:
   sounds:
   - name: Applause
     clip: {fileID: 8300000, guid: ce5969d5d9573434385e9eb1fade643d, type: 3}
-    volume: 0
-    pitch: 0
+    volume: 1
+    pitch: 1
     source: {fileID: 0}
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - name: BellDing
+    clip: {fileID: 8300000, guid: 3b6c8378b1f3beb4c86435899e836d1c, type: 3}
+    volume: 1
+    pitch: 1
     source: {fileID: 0}
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - name: Applause+Intro
+    clip: {fileID: 8300000, guid: 8a0573d079eecfd489194e53aecf553e, type: 3}
+    volume: 1
+    pitch: 1
     source: {fileID: 0}
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - name: GameShowTheme
+    clip: {fileID: 8300000, guid: 9cb765b5b1ee9e34897937c44188bc77, type: 3}
+    volume: 1
+    pitch: 1
     source: {fileID: 0}
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - name: ChoppingSound
+    clip: {fileID: 8300000, guid: 061a6ffc2b062524c8bae58c06fe7210, type: 3}
+    volume: 1
+    pitch: 1
     source: {fileID: 0}
-  - name: 
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+  - name: Sizzling
+    clip: {fileID: 8300000, guid: 1eda61935fa43b84ba5423c549a7efef, type: 3}
+    volume: 1
+    pitch: 1
     source: {fileID: 0}
 --- !u!1 &1775675604
 GameObject:

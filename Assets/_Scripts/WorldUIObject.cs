@@ -35,6 +35,7 @@ public class WorldUIObject : MonoBehaviour {
                 break;
             case bType.RESTART:
                 SceneManager.LoadScene("protoLevelAlpha");
+                GameManager.instance.restart();
                 break;
         }
     }

@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -60,8 +61,11 @@ public class GameManager : MonoBehaviour {
     {
         initGame();
     }
-	    void initGame()
+
+    void initGame()
     {
+        dishes.Clear();
+        dishScripts.Clear();
         setStage(1);
         setDifficulty(difficulty.HARD);
         dishSpawns = GameObject.FindGameObjectsWithTag("DishSpawn");
@@ -72,7 +76,7 @@ public class GameManager : MonoBehaviour {
 		judgeScripts [0].SetActive (true);
 		Debug.Log (judges[0] + "SET AS ACTIVE JUDGE");
 		numJudges++;
-		scoreUI = GameObject.FindWithTag ("ScoreUI").GetComponent<Text>();
+		scoreUI = GameObject.FindWithTag("ScoreUI").GetComponent<Text>();
 
         for (int i = 0; i < (int)mode; i++)
         {
@@ -84,18 +88,28 @@ public class GameManager : MonoBehaviour {
 
 	void Update() //JUST USING THIS TO TEST THE JUDGE SYSTEM
 	{
+        scoreUI = GameObject.FindGameObjectWithTag("ScoreUI").GetComponent<Text>();
         if(!sentForJudges)
         {
             if (minutesInRound <= 0.0f && secondsInMin <= 0.0f)
             {
                 secondsInMin = 0.0f;
                 minutesInRound = 0.0f;
+                SceneManager.LoadScene("protoLevelAlpha");
+                restart();
             }
             else
             {
                 if (secondsInMin == 60.0f)
                     minutesInRound--;
                 secondsInMin -= Time.deltaTime;
+                if (minutesInRound <= 0.0f && secondsInMin <= 0.0f)
+                {
+                    secondsInMin = 0.0f;
+                    minutesInRound = 0.0f;
+                    SceneManager.LoadScene("protoLevelAlpha");
+                    restart();
+                }
                 if (secondsInMin <= 0)
                     secondsInMin = 60.0f;
             }
@@ -127,6 +141,16 @@ public class GameManager : MonoBehaviour {
     //-----------------------------------------------------//
     //---------------------- SETTERS ----------------------//
     //-----------------------------------------------------//
+
+    public void restart()
+    {
+        Debug.Log("Level restarted");
+        minutesInRound = 2.0f;
+        secondsInMin = 60.0f;
+        score = 0;
+        initGame();
+        sentForJudges = false;
+    }
 
     public void setDifficulty(difficulty m)
     {

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
     public enum difficulty { EASY = 1, MEDIUM = 2, HARD = 3 }
     public static GameManager instance = null;
     public GameObject[] dishSpawns;
+   
     public List<GameObject> dishes;
     public List<BurgerDishScript> dishScripts;
 	public List<GameObject> judges;
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour {
         }
         dishListLength = (int)mode;
     }
-
+   
 	void Update() //JUST USING THIS TO TEST THE JUDGE SYSTEM
 	{
         if(!sentForJudges)
@@ -157,8 +158,10 @@ public class GameManager : MonoBehaviour {
     {
         return dishListLength;
     }
+   
 
 }
+
 
 //REMEMBER: IF YOU ARE APPENDING THE ENUMERATION, ADD TO THE END, NOT THE BEGINNING OR IN BETWEEN
 public enum BurgerIngType //add the rest later as more ingredients are added to the game

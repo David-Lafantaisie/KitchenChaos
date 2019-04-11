@@ -13,6 +13,9 @@ TagManager:
   - Judge
   - Button
   - ScoreUI
+  - spawnButton
+  - leftButton
+  - rightButton
   layers:
   - Default
   - TransparentFX

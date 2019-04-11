@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: 724d82b75b4a7304ab2e2cdae94a3b48
+guid: 1aa52ec2fbb498b40bb21e6d819922eb
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - foodSpawnLoc: {fileID: 100000, guid: 21ec259370238e8459c4537b305f43b2, type: 3}
-  - dish: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -132,9 +132,40 @@ public class GameManager : MonoBehaviour {
 				score += judgeScripts [0].JudgeBurger (dishScripts [i]);
 				Debug.Log ("FINAL SCORE = " + score);
 			}
+			hostComment ();
             scoreUI.fontSize = 60;
 			scoreUI.text = "YOUR FINAL SCOrE\n" + score.ToString();
 			sentForJudges = true;
+		}
+	}
+
+	private void hostComment()
+	{
+		if (score > 8.0f) 
+		{
+			FindObjectOfType<audioManager> ().Play ("GoodScore");
+		}
+		else if (score > 7.0f) 
+		{
+			FindObjectOfType<audioManager> ().Play ("OkButNotGoodScore");
+		} 
+		else if (score < 5.0f) 
+		{
+			int r = Random.Range (0, 2);
+			if (r == 0)
+				FindObjectOfType<audioManager> ().Play ("BadScore");
+			else
+				FindObjectOfType<audioManager> ().Play ("BadScore2");
+		} 
+		else 
+		{
+			int r = Random.Range (0, 3);
+			if (r == 0)
+				FindObjectOfType<audioManager>().Play("OkScore");
+			else if (r == 1)
+				FindObjectOfType<audioManager>().Play("OkScore2");
+			else
+				FindObjectOfType<audioManager>().Play("OkScore3");
 		}
 	}
 

@@ -21,6 +21,10 @@ public class HostScript : MonoBehaviour {
     private float time = 0;
     private float[] samples =  new float[64];
     float sampleAverage;
+	bool saidLine2 = false;
+	bool saidLine3 = false;
+	bool saidLine4 = false;
+	bool saidLine5 = false;
 
 	// Use this for initialization
 	void Start ()
@@ -46,6 +50,26 @@ public class HostScript : MonoBehaviour {
         agent.baseOffset = Mathf.Sin(time) + 2;
         time += 0.01f;
         setHostMouthColor();
+
+		if (time >= 10.0f && !saidLine2) {
+			FindObjectOfType<audioManager>().Play("HostStart");
+			saidLine2 = true;
+		}
+
+		if (time >= 20.0f && !saidLine3) {
+			FindObjectOfType<audioManager>().Play("TipsOne");
+			saidLine3 = true;
+		}
+
+		if (time >= 30.0f && !saidLine4) {
+			FindObjectOfType<audioManager>().Play("TipsTwo");
+			saidLine4 = true;
+		}
+
+		if (time >= 40.0f && !saidLine5) {
+			FindObjectOfType<audioManager>().Play("TipsThree");
+			saidLine5 = true;
+		}
     }
 
     private void setHostMouthColor()

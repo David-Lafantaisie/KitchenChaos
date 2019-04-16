@@ -94,6 +94,7 @@ public class BurgerIngredientScript : MonoBehaviour
                 foodColor.g = 0f;
                 foodColor.b = 0f;
                 foodColor.a = 1f;
+				HostBurnComment ();
             }
             else if(totalTimeCooked >= perfectCookingTime * 1.5f)
             {
@@ -101,6 +102,15 @@ public class BurgerIngredientScript : MonoBehaviour
             }
         }
     }
+
+	private void HostBurnComment()
+	{
+		int r = Random.Range (0, 2);
+		if (r == 0)
+			FindObjectOfType<audioManager>().Play("PattyBurntOne");
+		else
+			FindObjectOfType<audioManager>().Play("PattyBurntTwo");
+	}
 
     private void Start()
     {

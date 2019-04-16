@@ -19,7 +19,7 @@ public class PlayerScript : MonoBehaviour {
     enum Axis { ROLL, PITCH, YAW };
 
     //TESTING VARIABLES
-    [SerializeField] private bool testingControls = false;//Set this to true if you want to use testing controls instead of regular ones
+    [SerializeField] private bool testingControls = true;//Set this to true if you want to use testing controls instead of regular ones
     [SerializeField] private GameObject testStartPos;
     [SerializeField] private GameObject testMaxLeftPos;
     [SerializeField] private GameObject testMaxRightPos;
